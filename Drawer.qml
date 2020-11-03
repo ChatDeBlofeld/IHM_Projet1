@@ -1,12 +1,21 @@
 import QtQuick 2.0
 
 Rectangle {
-    id: drawer
-    width: 120
-    height: 70
-    color: "brown"
+    readonly property int _WIDTH : 120
+    readonly property int _FRONT_PANNEL_HEIGHT : 70
+    readonly property int _INSIDE_DEPTH : 150
+    readonly property int _INSIDE_BORDER_WIDTH : 10
 
     property var isExtended: false
+
+
+    id: drawer
+    width: _WIDTH
+    height: _FRONT_PANNEL_HEIGHT
+
+    color: "brown"
+
+
 
     Rectangle {
         id: knob
@@ -23,11 +32,11 @@ Rectangle {
 
     Rectangle{
         id: bottom
-        width: parent.width - 20
-        height: parent.height - 70
+        width: parent.width - _INSIDE_BORDER_WIDTH * 2
+        height: parent.height - _FRONT_PANNEL_HEIGHT
         color: "#381700"
         anchors.top: parent.top
-        anchors.topMargin: 5
+        anchors.topMargin: _INSIDE_BORDER_WIDTH
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
@@ -38,10 +47,10 @@ Rectangle {
         onClicked: {
             if(mouse.button == Qt.LeftButton){
                 if(isExtended){
-                    drawer.height -= 150
+                    drawer.height -= _INSIDE_DEPTH
                     isExtended = false;
                 }else {
-                    drawer.height += 150
+                    drawer.height += _INSIDE_DEPTH
                     isExtended = true;
                 }
             }
