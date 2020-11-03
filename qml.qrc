@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>PostIt.qml</file>
+        <file>Drawer.qml</file>
     </qresource>
 </RCC>
