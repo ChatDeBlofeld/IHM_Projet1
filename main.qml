@@ -63,6 +63,6 @@ Window {
 
     TrashStack {
         id: trash
-        anchors { right: parent.right; bottom: parent.bottom; rightMargin: 20; bottomMargin: 20}
+        anchors { right: parent.right; bottom: parent.bottom; rightMargin: 0.2 * width; bottomMargin: 0.2 * height}
     }
 }

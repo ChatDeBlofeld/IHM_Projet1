@@ -19,12 +19,12 @@ DragArea {
         var maxX = maxWidth;
         var maxY = maxHeight;
 
-        if (postIt.x < heapX + heapWidth) {
-            maxY = heapY;
+        if (postIt.x < heapX + heapWidth * 0.83) {
+            maxY = heapY + heapHeight * 0.2;
         }
 
-        if (postIt.y + postIt.height > heapY) {
-            minX = heapX + heapWidth;
+        if (postIt.y + postIt.height > heapY + heapHeight * 0.2) {
+            minX = heapX + heapWidth * 0.83;
         }
 
         if (isOnTrash(postIt) && !onTrash) {

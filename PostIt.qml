@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.0
+import QtGraphicalEffects 1.15
+
 
 PostItBase {
     id: shape
@@ -170,5 +172,20 @@ PostItBase {
                 }
             }
         }
+    }
+
+
+    Rectangle {
+        id: dropShadowRect
+        property real offset: Math.min(parent.width*0.025, parent.height*0.025)
+        color: "#20000000"
+        width: parent.width + offset
+        height: parent.height + offset
+        x: -1
+        y: -1
+        z: -1
+        opacity: 0.75
+        radius: parent.radius + 2
+
     }
 }

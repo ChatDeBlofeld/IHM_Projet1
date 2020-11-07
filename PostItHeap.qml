@@ -22,10 +22,11 @@ Item {
         anchors.centerIn: heap
         id: template
         dragArea: heap.creationDragArea
+        border.width: 0
 
         Drag.onActiveChanged: {
             if (Drag.active === false) {
-                if (x > heap.x + heap.width || y + height < heap.y){
+                if (x > heap.x + heap.width * 0.83 || y + height < heap.y + heap.height * 0.2){
                     var c = Qt.createComponent("PostIt.qml");
                     c.createObject(heap.parent, {
                                        x: x,
