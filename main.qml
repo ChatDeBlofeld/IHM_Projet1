@@ -4,8 +4,8 @@ import Backend 1.0
 
 Window {
     id: mainFrame
-    width: 640
-    height: 480
+    width: 1024
+    height: 720
     visible: true
     title: qsTr("Brain extender")
     // visibility: Window.FullScreen
@@ -13,6 +13,10 @@ Window {
     readonly property DragArea creationDragArea: DragArea {
         maxWidth: mainFrame.width
         maxHeight: mainFrame.height
+        trashHeight: trash.height
+        trashWidth: trash.width
+        trashX: trash.x
+        trashY: trash.y
     }
 
     readonly property DragArea postItDragArea: RestrictedDragArea {
@@ -22,6 +26,28 @@ Window {
         heapWidth: heap.width
         heapX: heap.x
         heapY: heap.y
+        trashHeight: trash.height
+        trashWidth: trash.width
+        trashX: trash.x
+        trashY: trash.y
+
+        onTrashed: {
+            postIt.anchors.centerIn = trash;
+            postIt.readOnly(true);
+            trash.scale = 1;
+        }
+        onUntrashed: {
+            postIt.anchors.centerIn = null;
+            postIt.readOnly(false);
+        }
+
+        onHoveredTrash: {
+            trash.scale = 1.5;
+        }
+
+        onUnHoveredTrash: {
+            trash.scale = 1;
+        }
     }
 
     UnhandledEventsHandler {
@@ -35,9 +61,8 @@ Window {
         newDragArea: mainFrame.postItDragArea
     }
 
-    PostIt {
-        x: 50
-        y: 50
-        dragArea: mainFrame.postItDragArea
+    TrashStack {
+        id: trash
+        anchors { right: parent.right; bottom: parent.bottom; rightMargin: 20; bottomMargin: 20}
     }
 }

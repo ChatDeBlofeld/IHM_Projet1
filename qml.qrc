@@ -8,5 +8,6 @@
         <file>Outline.qml</file>
         <file>DragArea.qml</file>
         <file>RestrictedDragArea.qml</file>
+        <file>TrashStack.qml</file>
     </qresource>
 </RCC>

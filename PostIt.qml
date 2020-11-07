@@ -22,7 +22,7 @@ PostItBase {
 
     function updateArea() {
         if (active) {
-            var r = dragArea.newArea(x,y,width,height);
+            var r = dragArea.newArea(this);
             backgroundArea.drag.minimumX = r.minX;
             backgroundArea.drag.minimumY = r.minY;
             backgroundArea.drag.maximumX = r.maxX;
@@ -55,7 +55,15 @@ PostItBase {
     Drag.onActiveChanged: {
         if (Drag.active === true) {
             forceActiveFocus();
+            dragArea.press(this);
+        } else  {
+            dragArea.release(this);
         }
+    }
+
+    function readOnly(flag) {
+        content.readOnly = flag;
+        dueDate.readOnly = flag;
     }
 
     MouseArea {
@@ -100,6 +108,7 @@ PostItBase {
                         onClicked: {
                             content.cursorPosition = content.positionAt(mouseX, mouseY);
                             content.forceActiveFocus();
+                            console.log(shape.parent);
                         }
                     }
                 }
