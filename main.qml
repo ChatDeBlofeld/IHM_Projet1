@@ -6,6 +6,11 @@ Window {
     height: 480
     visible: true
     title: qsTr("Hello World")
+    // visibility: Window.FullScreen
+
+    PostItHeap {
+        anchors { left: parent.left; bottom: parent.bottom;}
+    }
 
     PostIt {
         x: 50
