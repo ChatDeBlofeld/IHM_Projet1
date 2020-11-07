@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
         createpostithandler.cpp \
+        deadlinehandler.cpp \
         main.cpp \
         unhandledeventshandler.cpp
 
@@ -26,4 +27,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     createpostithandler.h \
+    deadlinehandler.h \
     unhandledeventshandler.h

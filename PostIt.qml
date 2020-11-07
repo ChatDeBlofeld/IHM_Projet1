@@ -4,6 +4,9 @@ import QtQuick.Controls 2.0
 
 PostItBase {
     id: shape
+    objectName: "Postit"
+    property var locale: Qt.locale() // ???
+    property date deadline: new Date()
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -108,6 +111,11 @@ PostItBase {
                             }
                         }
                     }
+
+                    onTextChanged: {
+                        updateDate()
+                    }
+
                     padding: 2
                     leftPadding: 8
                     rightPadding: 8
@@ -139,5 +147,10 @@ PostItBase {
                 }
             }
         }
+    }
+
+    function updateDate(){
+        //var dateString = deadline.toLocaleDateString();
+        console.log(deadline)
     }
 }

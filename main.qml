@@ -13,17 +13,30 @@ Window {
         anchors.fill: parent
     }
 
+    DeadlineHandler{
+        id: deadlineHandler
+    }
+
+    Timer{
+        interval: 1000;
+        running: true;
+        repeat: true;
+        onTriggered: updateDeadlines()
+    }
+
     PostItHeap {
         anchors { left: parent.left; bottom: parent.bottom;}
     }
-
+/*
     PostIt {
         x: 50
         y: 50
     }
+    */
 
-    Drawer {
-        x: 200
-        y: 50
+    function updateDeadlines(){
+        deadlineHandler.findPostits()
     }
+
+
 }

@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QSurfaceFormat>
 #include "unhandledeventshandler.h"
+#include "deadlinehandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     qmlRegisterType<UnhandledEventsHandler>("Backend", 1, 0, "UnhandledEventsHandler");
+    qmlRegisterType<DeadlineHandler>("Backend", 1, 0, "DeadlineHandler");
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
