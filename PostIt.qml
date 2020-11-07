@@ -4,8 +4,28 @@ import QtQuick.Controls 2.0
 
 PostItBase {
     id: shape
-    property string contentText: content.text
-    property string dueDateText: dueDate.text
+    readonly property string contentText: content.text
+    readonly property string dueDateText: dueDate.text
+    property string setContentText
+    property string setDueDateText
+
+    onContentTextChanged: {
+        setContentText = contentText;
+    }
+
+    onDueDateTextChanged: {
+        setDueDateText = dueDateText;
+    }
+
+    onSetContentTextChanged: {
+        if (contentText != setContentText)
+            content.text = setContentText;
+    }
+
+    onSetDueDateTextChanged: {
+        if (dueDateText != setDueDateText)
+            dueDate.text = setDueDateText
+    }
 
     Drag.active: {
         return backgroundArea.drag.active || contentArea.drag.active || dateArea.drag.active;
