@@ -6,5 +6,7 @@
         <file>PostItHeap.qml</file>
         <file>PostItBase.qml</file>
         <file>Outline.qml</file>
+        <file>DragArea.qml</file>
+        <file>RestrictedDragArea.qml</file>
     </qresource>
 </RCC>

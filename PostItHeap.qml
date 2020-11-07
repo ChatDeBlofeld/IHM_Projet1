@@ -5,6 +5,8 @@ Item {
     id: heap
     height: template.height * 1.41
     width: template.width * 1.41
+    property DragArea creationDragArea
+    property DragArea newDragArea
 
     Repeater {
         model: ["light blue", "light green", "pink"]
@@ -17,29 +19,31 @@ Item {
     }
 
     PostIt {
-        anchors.centerIn: parent
+        anchors.centerIn: heap
         id: template
+        dragArea: heap.creationDragArea
 
         Drag.onActiveChanged: {
             if (Drag.active === false) {
-                if ((x + width / 2 - parent.width / 2)**2
-                        + (y + height / 2 - parent.height / 2)**2
-                        > width**2){
+                if (x > heap.x + heap.width || y + height < heap.y){
                     var c = Qt.createComponent("PostIt.qml");
                     c.createObject(heap.parent, {
-                                       x: x + heap.x,
-                                       y: y + heap.y,
+                                       x: x,
+                                       y: y,
                                        setContentText: contentText,
-                                       setDueDateText: dueDateText
+                                       setDueDateText: dueDateText,
+                                       dragArea: heap.newDragArea
                                    });
                     template.setContentText = "";
                     template.setDueDateText = "";
                 }
 
-                anchors.centerIn = parent;
+                parent = heap;
+                anchors.centerIn = heap;
             } else {
                 forceActiveFocus();
                 anchors.centerIn = null;
+                parent = heap.parent;
             }
         }
     }

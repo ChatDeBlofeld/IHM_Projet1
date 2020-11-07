@@ -15,4 +15,5 @@ void UnhandledEventsHandler::mousePressEvent(QMouseEvent *event)
 {
     QQuickItem::mousePressEvent(event);
     QQuickItem::forceActiveFocus();
+    parent()->findChildren<QObject*>("PostIt");
 }
