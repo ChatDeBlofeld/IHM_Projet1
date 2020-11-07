@@ -34,4 +34,9 @@ Item {
 
     }
 
+    function nextZ() {
+        return 1000000;
+    }
+
+
 }

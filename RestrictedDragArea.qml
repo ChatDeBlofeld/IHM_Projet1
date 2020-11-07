@@ -54,4 +54,12 @@ DragArea {
     function isOnTrash(postIt) {
         return postIt.x > trashX - 3 / 4 * trashWidth && postIt.y > trashY - 3 / 4 * trashHeight;
     }
+
+    function nextZ() {
+        if( typeof nextZ.counter == 'undefined' ) {
+                nextZ.counter = 100;
+        }
+        return nextZ.counter++;
+    }
+
 }

@@ -4,6 +4,7 @@ Item {
     id: stack
     width: 200
     height: 200
+    z: 2000000
 
     Repeater {
         model: [45, -45]

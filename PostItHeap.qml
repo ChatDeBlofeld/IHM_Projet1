@@ -30,6 +30,7 @@ Item {
                     c.createObject(heap.parent, {
                                        x: x,
                                        y: y,
+                                       z: heap.newDragArea.nextZ(),
                                        setContentText: contentText,
                                        setDueDateText: dueDateText,
                                        dragArea: heap.newDragArea

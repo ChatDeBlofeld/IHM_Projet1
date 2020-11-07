@@ -56,6 +56,7 @@ PostItBase {
         if (Drag.active === true) {
             forceActiveFocus();
             dragArea.press(this);
+            shape.z = dragArea.nextZ();
         } else  {
             dragArea.release(this);
         }
@@ -72,6 +73,7 @@ PostItBase {
         drag.target: parent
         drag.filterChildren: true
         onClicked: {
+            shape.z = dragArea.nextZ();
             forceActiveFocus();
         }
 
@@ -108,7 +110,7 @@ PostItBase {
                         onClicked: {
                             content.cursorPosition = content.positionAt(mouseX, mouseY);
                             content.forceActiveFocus();
-                            console.log(shape.parent);
+                            shape.z = dragArea.nextZ();
                         }
                     }
                 }
@@ -132,6 +134,7 @@ PostItBase {
                                 onClicked: {
                                     dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
                                     dueDate.forceActiveFocus();
+                                    shape.z = dragArea.nextZ();
                                 }
                             }
                         }
