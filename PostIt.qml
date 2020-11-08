@@ -6,8 +6,11 @@ import QtGraphicalEffects 1.15
 
 PostItBase {
     id: shape
+    objectName: "Postit"
     border.color: "#10000000"
     border.width: 2
+    property var locale: Qt.locale() // ???
+    property date deadline: new Date()
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -148,6 +151,11 @@ PostItBase {
                         }
                     }
                 }
+
+                onTextChanged: {
+                    updateDate()
+                }
+
                 padding: 2 * shape.scaling
                 leftPadding: 8 * shape.scaling
                 rightPadding: 8 * shape.scaling
@@ -193,5 +201,10 @@ PostItBase {
         z: -1
         radius: parent.radius + 2
 
+    }
+
+    function updateDate(){
+        //var dateString = deadline.toLocaleDateString();
+        console.log(deadline)
     }
 }
