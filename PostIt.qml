@@ -7,6 +7,7 @@ import QtGraphicalEffects 1.15
 PostItBase {
     id: shape
     border.color: "#10000000"
+    border.width: 2
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -78,7 +79,7 @@ PostItBase {
             border.color = "transparent";
         } else {
             dropShadowRect.visible = true;
-            border.color = "#01000000"
+            border.color = "#10000000"
         }
     }
 
