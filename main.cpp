@@ -6,12 +6,6 @@
 #include "customdate.h"
 
 
-void testStuff(){
-    CustomDate date = CustomDate();
-    date.setSecond(12);
-    qDebug() << "seconde : " << date.second();
-}
-
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -23,9 +17,6 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
 
     QQmlApplicationEngine engine;
-
-    testStuff();
-
 
     qmlRegisterType<UnhandledEventsHandler>("Backend", 1, 0, "UnhandledEventsHandler");
     qmlRegisterType<DeadlineHandler>("Backend", 1, 0, "DeadlineHandler");

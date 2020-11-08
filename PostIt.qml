@@ -11,7 +11,14 @@ PostItBase {
 
     border.color: borderColor
     border.width: 2
-    property CustomDate deadline
+    property CustomDate deadline: CustomDate{
+        year: 2020
+        month: 11
+        day: 8
+        hour: 22
+        minute: 48
+        second: 10
+    }
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
