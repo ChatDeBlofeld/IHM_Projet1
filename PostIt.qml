@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.15
 
 PostItBase {
     id: shape
+    border.color: "#10000000"
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -50,6 +51,10 @@ PostItBase {
             dueDate.text = setDueDateText
     }
 
+    onScalingChanged: {
+        var r = dragArea.handleZoom(this);
+    }
+
     Drag.active: {
         return backgroundArea.drag.active || contentArea.drag.active || dateArea.drag.active;
     }
@@ -67,6 +72,14 @@ PostItBase {
     function readOnly(flag) {
         content.readOnly = flag;
         dueDate.readOnly = flag;
+
+        if (flag) {
+            dropShadowRect.visible = false;
+            border.color = "transparent";
+        } else {
+            dropShadowRect.visible = true;
+            border.color = "#01000000"
+        }
     }
 
     MouseArea {
@@ -82,15 +95,16 @@ PostItBase {
         ColumnLayout {
             id: container
             anchors.fill: parent
-            anchors.margins: 8
+            anchors.margins: 8 * shape.scaling
             spacing: 0
 
             TextArea {
                 id: content
                 padding: 0
                 wrapMode: TextEdit.Wrap
-                font.pointSize: 16
+                font.pointSize: 14.5 * shape.scaling
                 placeholderText: qsTr("Ecrivez votre\nnote ici...")
+//                color: "#545454"
                 placeholderTextColor: "grey"
                 onTextChanged: {
                     var pos = content.positionAt(1, height + 1);
@@ -117,59 +131,51 @@ PostItBase {
                     }
                 }
             }
-            Rectangle {
-                width: container.width
-                height: 25
-    //                color: "red"
-                color: "transparent"
 
-                RowLayout {
-                    anchors.fill: parent
-
-                    TextField {
-                        id: dueDate
-                        background: Outline {
-                            MouseArea {
-                                id: dateArea
-                                anchors.fill: parent
-                                propagateComposedEvents: true
-                                onClicked: {
-                                    dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
-                                    dueDate.forceActiveFocus();
-                                    shape.z = dragArea.nextZ();
-                                }
-                            }
+            TextField {
+                id: dueDate
+                background: Outline {
+                    border.width: 2 * shape.scaling
+                    MouseArea {
+                        id: dateArea
+                        anchors.fill: parent
+                        propagateComposedEvents: true
+                        onClicked: {
+                            dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
+                            dueDate.forceActiveFocus();
+                            shape.z = dragArea.nextZ();
                         }
-                        padding: 2
-                        leftPadding: 8
-                        rightPadding: 8
-                        font.italic: true
-
-                        color: "grey"
-
-                        placeholderText: qsTr("Echéance...")
-                        placeholderTextColor: "dark grey"
-
-                        maximumLength: {
-                            if (container.width - contentWidth < 25) {
-                                return length;
-                            } else {
-                                return 32767;
-                            }
-                        }
-
-                        Layout.preferredWidth: {
-                            if (dueDate.length == 0) {
-                                return 100;
-                            } else {
-                                return contentWidth + leftPadding + rightPadding;
-                            }
-                        }
-
-                        Layout.minimumHeight: 15
-                        Layout.maximumWidth: container.width
                     }
                 }
+                padding: 2 * shape.scaling
+                leftPadding: 8 * shape.scaling
+                rightPadding: 8 * shape.scaling
+                font.italic: true
+                font.pointSize: 12 * shape.scaling
+
+                color: "grey"
+
+                placeholderText: qsTr("Echéance...")
+                placeholderTextColor: "dark grey"
+
+                maximumLength: {
+                    if (container.width - contentWidth < 25 * shape.scaling) {
+                        return length;
+                    } else {
+                        return 32767;
+                    }
+                }
+
+                Layout.preferredWidth: {
+                    if (dueDate.length == 0) {
+                        return 105 * shape.scaling;
+                    } else {
+                        return contentWidth + leftPadding + rightPadding;
+                    }
+                }
+
+                Layout.minimumHeight: 15 * shape.scaling
+                Layout.maximumWidth: container.width
             }
         }
     }
@@ -178,13 +184,12 @@ PostItBase {
     Rectangle {
         id: dropShadowRect
         property real offset: Math.min(parent.width*0.025, parent.height*0.025)
-        color: "#20000000"
-        width: parent.width + offset
-        height: parent.height + offset
-        x: -1
-        y: -1
+        color: "#10000000"
+        width: parent.width
+        height: parent.height
+        x: offset
+        y: offset
         z: -1
-        opacity: 0.75
         radius: parent.radius + 2
 
     }

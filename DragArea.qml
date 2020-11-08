@@ -26,6 +26,10 @@ Item {
         return {minX: minX, minY: minY, maxX: maxX - postIt.width, maxY: maxY - postIt.height};
     }
 
+    function handleZoom(postIt) {
+
+    }
+
     function release(postIt) {
 
     }

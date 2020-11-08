@@ -7,6 +7,7 @@ Item {
     width: template.width * 1.41
     property DragArea creationDragArea
     property DragArea newDragArea
+    property real scaling: 1
 
     Repeater {
         model: ["light blue", "light green", "pink"]
@@ -14,6 +15,7 @@ Item {
         PostItBase {
             color: modelData
             anchors.centerIn: parent
+            scaling: heap.scaling
             transform: Rotation { origin.x: width / 2; origin.y: height / 2; angle: 25 * (1 + index)}
         }
     }
@@ -22,7 +24,9 @@ Item {
         anchors.centerIn: heap
         id: template
         dragArea: heap.creationDragArea
+        scaling: heap.scaling
         border.width: 0
+        parent: heap.parent
 
         Drag.onActiveChanged: {
             if (Drag.active === false) {
@@ -34,18 +38,17 @@ Item {
                                        z: heap.newDragArea.nextZ(),
                                        setContentText: contentText,
                                        setDueDateText: dueDateText,
-                                       dragArea: heap.newDragArea
+                                       dragArea: heap.newDragArea,
+                                       scaling: scaling
                                    });
                     template.setContentText = "";
                     template.setDueDateText = "";
                 }
 
-                parent = heap;
                 anchors.centerIn = heap;
             } else {
                 forceActiveFocus();
                 anchors.centerIn = null;
-                parent = heap.parent;
             }
         }
     }

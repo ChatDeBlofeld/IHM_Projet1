@@ -1,5 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import Backend 1.0
 
 Window {
@@ -8,7 +10,7 @@ Window {
     height: 720
     visible: true
     title: qsTr("Brain extender")
-    // visibility: Window.FullScreen
+//    visibility: Window.FullScreen
 
     readonly property DragArea creationDragArea: DragArea {
         maxWidth: mainFrame.width
@@ -59,6 +61,44 @@ Window {
         anchors { left: parent.left; bottom: parent.bottom;}
         creationDragArea: mainFrame.creationDragArea
         newDragArea: mainFrame.postItDragArea
+    }
+
+    RowLayout {
+        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 40}
+        z: 3000000
+
+        Text {
+            font.pointSize: 16
+            color: "grey"
+            text: qsTr("Zoom")
+        }
+
+        Slider {
+            from: 0.5
+            to: 1.75
+            value: 1
+
+            onValueChanged: {
+                heap.scaling = value;
+                trash.scaling = value;
+                var children = mainFrame.contentItem.children;
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].hasOwnProperty("scaling")) {
+                        children[i].scaling = value;
+                    }
+                }
+
+                valueDisplay.text = +(Math.round(value + "e+2")).toString() + "%"
+            }
+        }
+
+        Text {
+            id: valueDisplay
+            font.pointSize: 16
+            font.italic: true
+            color: "grey"
+            text: "100%"
+        }
     }
 
     TrashStack {
