@@ -6,6 +6,7 @@
 
 class CustomDate : public QObject
 {
+
     Q_OBJECT
     Q_PROPERTY(int year READ year WRITE setYear /*NOTIFY yearChanged*/)
     Q_PROPERTY(int month READ month WRITE setMonth /*NOTIFY monthChanged*/)
@@ -14,10 +15,13 @@ class CustomDate : public QObject
     Q_PROPERTY(int minute READ minute WRITE setMinute /*NOTIFY minuteChanged*/)
     Q_PROPERTY(int second READ second WRITE setSecond /*NOTIFY secondChanged*/)
 public:
-//    CustomDate();
+    CustomDate();
+    explicit CustomDate(QObject* parent);
 //    CustomDate(int year, int month, int day, int hour, int minute, int second);
 
-
+    CustomDate(const CustomDate &cd) : QObject(){
+        dateTime = cd.dateTime;
+    }
 
     bool getIsActive() const;
     void setIsActive(bool value);
@@ -40,9 +44,13 @@ public:
     int month() const;
     void setMonth(int month);
 
+    QDateTime getDateTime() const;
+
 private:
 
     QDateTime dateTime;
 };
+
+Q_DECLARE_METATYPE(CustomDate);
 
 #endif // CUSTOMDATE_H

@@ -1,12 +1,21 @@
 #include "customdate.h"
 #include <QDate>
 
-//CustomDate::CustomDate()
-//{
-//}
+CustomDate::CustomDate() : QObject()
+{
+}
+
+CustomDate::CustomDate(QObject* parent) : QObject(parent){
+
+}
 
 //CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int second) : dateTime(QDate(year, month, day), QTime(hour, minute, second)) {
 //}
+
+QDateTime CustomDate::getDateTime() const
+{
+    return dateTime;
+}
 
 int CustomDate::year() const
 {

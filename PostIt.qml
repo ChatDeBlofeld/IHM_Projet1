@@ -10,7 +10,15 @@ PostItBase {
     objectName: "Postit"
     border.color: borderColor
     border.width: 2
-    property CustomDate deadline: new CustomDate();
+    property CustomDate deadline:
+        CustomDate{
+            year: 2021
+            month: 11
+            day: 8
+            hour: 22
+            minute: 53
+            second: 10
+    }
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -201,14 +209,41 @@ PostItBase {
         y: offset
         z: -1
         radius: parent.radius + 2
-
     }
 
+
+    CustomDate{
+        id: myDate
+        year: 2021
+        month: 11
+        day: 8
+        hour: 22
+        minute: 53
+        second: 10
+    }
+/*
+    CustomDate{
+        year: 2020
+        month: 11
+        day: 8
+        hour: 22
+        minute: 48
+        second: 10
+    }
+*/
     function updateDate(){
-        //var dateString = deadline.toLocaleDateString();
-        deadline = Qt.createQmlObject('import Backend 1.0; CustomDate {hour: 3}',
-                                      shape,
-                                      "dynamicSnippet1");
-        console.log(deadline)
+//        //var dateString = deadline.toLocaleDateString();
+//        deadline = Qt.createQmlObject('import Backend 1.0; CustomDate{
+//        year: 2020
+//        month: 11
+//        day: 8
+//        hour: 22
+//        minute: 48
+//        second: 10
+//             }',
+//          shape,
+//          "dynamicSnippet1");
+//        console.log("deadline updated : " + deadline)
+        console.log("day = " + myDate.day);
     }
 }

@@ -5,6 +5,13 @@
 #include "deadlinehandler.h"
 #include "customdate.h"
 
+
+void testStuff(){
+    CustomDate date = CustomDate();
+    date.setSecond(12);
+    qDebug() << "seconde : " << date.second();
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -16,9 +23,14 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
 
     QQmlApplicationEngine engine;
+
+    testStuff();
+
+
     qmlRegisterType<UnhandledEventsHandler>("Backend", 1, 0, "UnhandledEventsHandler");
     qmlRegisterType<DeadlineHandler>("Backend", 1, 0, "DeadlineHandler");
     qmlRegisterType<CustomDate>("Backend", 1, 0, "CustomDate");
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -29,3 +41,5 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+
+
