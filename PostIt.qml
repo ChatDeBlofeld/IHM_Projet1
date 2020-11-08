@@ -206,7 +206,9 @@ PostItBase {
 
     function updateDate(){
         //var dateString = deadline.toLocaleDateString();
-        deadline = new CustomDate(2020, 8, 11, 22, 7, 12);
+        deadline = Qt.createQmlObject('import Backend 1.0; CustomDate {hour: 3}',
+                                      shape,
+                                      "dynamicSnippet1");
         console.log(deadline)
     }
 }
