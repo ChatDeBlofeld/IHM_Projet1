@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.15
+import Backend 1.0
 
 
 PostItBase {
@@ -9,8 +10,7 @@ PostItBase {
     objectName: "Postit"
     border.color: "#10000000"
     border.width: 2
-    property var locale: Qt.locale() // ???
-    property date deadline: new Date()
+    property CustomDate deadline: new CustomDate();
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -205,6 +205,7 @@ PostItBase {
 
     function updateDate(){
         //var dateString = deadline.toLocaleDateString();
+        deadline = new CustomDate(2020, )
         console.log(deadline)
     }
 }

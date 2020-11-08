@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
         createpostithandler.cpp \
+        customdate.cpp \
         deadlinehandler.cpp \
         main.cpp \
         unhandledeventshandler.cpp
@@ -27,5 +28,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     createpostithandler.h \
+    customdate.h \
     deadlinehandler.h \
     unhandledeventshandler.h
