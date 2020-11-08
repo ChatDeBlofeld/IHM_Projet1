@@ -14,9 +14,9 @@ PostItBase {
         CustomDate{
             year: 2020
             month: 11
-            day: 8
-            hour: 23
-            minute: 50
+            day: 9
+            hour: 00
+            minute: 22
             second: 10
     }
     readonly property string contentText: content.text

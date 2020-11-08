@@ -9,12 +9,12 @@ void DeadlineHandler::findPostits(){
     QList<QObject*> postits = parent()->findChildren<QObject*>("Postit");
 
     for (QObject * p : postits){
-        CustomDate customDeadline = qvariant_cast<CustomDate>(p->property("deadline"));
+        CustomDate* customDeadline = qvariant_cast<CustomDate*>(p->property("deadline"));
         QDateTime current = QDateTime::currentDateTime();
-        cout << "deadline : " << customDeadline << endl;
+        cout << "deadline : " << *customDeadline << endl;
         cout << "current : " << current.toString().toStdString() << endl;
-        cout << "---------------------------------------------------------------";
-        QDateTime deadline = customDeadline.toDateTime();
+        cout << "---------------------------------------------------------------" << endl << endl;
+        QDateTime deadline = customDeadline->toDateTime();
         if( deadline < current){
             qDebug() << "ALERTE pour " << p->property("contentText").toString();
         }
