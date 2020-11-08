@@ -3,18 +3,9 @@
 
 CustomDate::CustomDate()
 {
-    isActive = false;
 }
 
-
-bool CustomDate::getIsActive() const
-{
-    return isActive;
-}
-
-void CustomDate::setIsActive(bool value)
-{
-    isActive = value;
+CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int second) : dateTime(QDate(year, month, day), QTime(hour, minute, second)) {
 }
 
 int CustomDate::year() const

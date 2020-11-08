@@ -206,7 +206,7 @@ PostItBase {
 
     function updateDate(){
         //var dateString = deadline.toLocaleDateString();
-        deadline = new CustomDate(2020, )
+        deadline = new CustomDate(2020, 8, 11, 22, 7, 12);
         console.log(deadline)
     }
 }

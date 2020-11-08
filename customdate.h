@@ -9,13 +9,14 @@ class CustomDate : public QObject
     Q_OBJECT
 public:
     CustomDate();
+    CustomDate(int year, int month, int day, int hour, int minute, int second);
 
-    Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
-    Q_PROPERTY(int month READ month WRITE setMonth NOTIFY monthChanged)
-    Q_PROPERTY(int day READ day WRITE setDay NOTIFY dayChanged)
-    Q_PROPERTY(int hour READ hour WRITE setHour NOTIFY hourChanged)
-    Q_PROPERTY(int minute READ minute WRITE setMinute NOTIFY minuteChanged)
-    Q_PROPERTY(int second READ second WRITE setSecond NOTIFY secondChanged)
+    Q_PROPERTY(int year READ year WRITE setYear /*NOTIFY yearChanged*/)
+    Q_PROPERTY(int month READ month WRITE setMonth /*NOTIFY monthChanged*/)
+    Q_PROPERTY(int day READ day WRITE setDay /*NOTIFY dayChanged*/)
+    Q_PROPERTY(int hour READ hour WRITE setHour /*NOTIFY hourChanged*/)
+    Q_PROPERTY(int minute READ minute WRITE setMinute /*NOTIFY minuteChanged*/)
+    Q_PROPERTY(int second READ second WRITE setSecond /*NOTIFY secondChanged*/)
 
     bool getIsActive() const;
     void setIsActive(bool value);
