@@ -8,9 +8,10 @@ import Backend 1.0
 PostItBase {
     id: shape
     objectName: "Postit"
+
     border.color: borderColor
     border.width: 2
-    property CustomDate deadline: new CustomDate();
+    property CustomDate deadline
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
@@ -204,11 +205,25 @@ PostItBase {
 
     }
 
-    function updateDate(){
+    function updateDate(){ 
         //var dateString = deadline.toLocaleDateString();
-        deadline = Qt.createQmlObject('import Backend 1.0; CustomDate {hour: 3}',
-                                      shape,
-                                      "dynamicSnippet1");
-        console.log(deadline)
+        deadline = createDate(new Date());
+        console.log(deadline.year)
+        deadline.year = 2300;
+        console.log(deadline.year)
+    }
+
+    function createDate(date) {
+        return deadline = Qt.createQmlObject(
+                `import Backend 1.0;
+                CustomDate {
+                    year: ${date.getFullYear()}
+                    month: ${date.getMonth() + 1}
+                    day: ${date.getDate()}
+                    hour: ${date.getHours()}
+                    minute: ${date.getMinutes()}
+                    second: ${date.getSeconds()}
+                }`,
+            shape);
     }
 }
