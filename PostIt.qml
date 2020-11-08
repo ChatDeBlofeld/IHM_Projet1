@@ -12,11 +12,11 @@ PostItBase {
     border.width: 2
     property CustomDate deadline:
         CustomDate{
-            year: 2021
+            year: 2020
             month: 11
             day: 8
-            hour: 22
-            minute: 53
+            hour: 23
+            minute: 50
             second: 10
     }
     readonly property string contentText: content.text
@@ -211,16 +211,6 @@ PostItBase {
         radius: parent.radius + 2
     }
 
-
-    CustomDate{
-        id: myDate
-        year: 2021
-        month: 11
-        day: 8
-        hour: 22
-        minute: 53
-        second: 10
-    }
 /*
     CustomDate{
         year: 2020
@@ -244,6 +234,6 @@ PostItBase {
 //          shape,
 //          "dynamicSnippet1");
 //        console.log("deadline updated : " + deadline)
-        console.log("day = " + myDate.day);
+        console.log("day = " + deadline.day + " year = " + deadline.year);
     }
 }

@@ -1,80 +1,97 @@
 #include "customdate.h"
 #include <QDate>
+#include <iostream>
+
+using namespace std;
 
 CustomDate::CustomDate() : QObject()
 {
 }
 
-CustomDate::CustomDate(QObject* parent) : QObject(parent){
 
+CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int second) : _year(year), _month(month), _day(day), _hour(hour), _minute(minute), _second(second) {
 }
 
-//CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int second) : dateTime(QDate(year, month, day), QTime(hour, minute, second)) {
-//}
 
-QDateTime CustomDate::getDateTime() const
+ostream &operator<<( ostream &output, const CustomDate &d ) {
+         output << d.year() << "-" << d.month() << "-" << d.day() << " " << d.hour() << ":" << d.minute() << ":" << d.second();
+         return output;
+      }
+
+QDateTime CustomDate::toDateTime()
 {
-    return dateTime;
+    return QDateTime(QDate(_year, _month, _day), QTime(_hour, _minute, _second));
 }
+
+bool CustomDate::getIsActive() const
+{
+    return _isActive;
+}
+
+void CustomDate::setIsActive(bool value)
+{
+    _isActive = value;
+}
+
 
 int CustomDate::year() const
 {
-    return dateTime.date().year();
+    return _year;
 }
 
 void CustomDate::setYear(int year)
 {
-    dateTime.setDate(QDate(year, dateTime.date().month(), dateTime.date().day()));
+    _year = year;
 }
 
 int CustomDate::month() const
 {
-    return dateTime.date().month();
+    return _month;
 }
 
 void CustomDate::setMonth(int month)
 {
-    dateTime.setDate(QDate(dateTime.date().year(), month, dateTime.date().day()));
+    _month = month;
 }
 
 int CustomDate::day() const
 {
-    return dateTime.date().day();
+    return _day;
 }
 
 void CustomDate::setDay(int day)
 {
-    dateTime.setDate(QDate(dateTime.date().year(), dateTime.date().month(), day));
+    _day = day;
 }
 
 int CustomDate::hour() const
 {
-    return dateTime.time().hour();
+    return _hour;
 }
 
 void CustomDate::setHour(int hour)
 {
-    dateTime.setTime(QTime(hour, dateTime.time().minute(), dateTime.time().second()));
+    _hour = hour;
 }
 
 int CustomDate::minute() const
 {
-    return dateTime.time().minute();
+    return _minute;
 }
 
 void CustomDate::setMinute(int minute)
 {
-    dateTime.setTime(QTime(dateTime.time().hour(), minute,  dateTime.time().second()));
+    _minute = minute;
 }
 
 int CustomDate::second() const
 {
-    return dateTime.time().second();
+    return _second;
 }
 
 void CustomDate::setSecond(int second)
 {
-    dateTime.setTime(QTime(dateTime.time().hour(), dateTime.time().minute(), second));
+    _second = second;
 }
 
 

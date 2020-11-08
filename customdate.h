@@ -6,6 +6,7 @@
 
 class CustomDate : public QObject
 {
+    friend std::ostream &operator<<( std::ostream &output, const CustomDate &d );
 
     Q_OBJECT
     Q_PROPERTY(int year READ year WRITE setYear /*NOTIFY yearChanged*/)
@@ -16,12 +17,18 @@ class CustomDate : public QObject
     Q_PROPERTY(int second READ second WRITE setSecond /*NOTIFY secondChanged*/)
 public:
     CustomDate();
-    explicit CustomDate(QObject* parent);
-//    CustomDate(int year, int month, int day, int hour, int minute, int second);
+    CustomDate(int year, int month, int day, int hour, int minute, int second);
 
     CustomDate(const CustomDate &cd) : QObject(){
-        dateTime = cd.dateTime;
+        _year = cd.year();
+        _month = cd.month();
+        _day = cd.day();
+        _hour = cd.hour();
+        _minute = cd.minute();
+        _second = cd.second();
     }
+
+    QDateTime toDateTime();
 
     bool getIsActive() const;
     void setIsActive(bool value);
@@ -44,11 +51,16 @@ public:
     int month() const;
     void setMonth(int month);
 
-    QDateTime getDateTime() const;
 
 private:
+    bool _isActive;
+    int _year;
+    int _month;
+    int _day;
+    int _hour;
+    int _minute;
+    int _second;
 
-    QDateTime dateTime;
 };
 
 Q_DECLARE_METATYPE(CustomDate);
