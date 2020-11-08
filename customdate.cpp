@@ -24,7 +24,17 @@ int CustomDate::year() const
 
 void CustomDate::setYear(int year)
 {
-    dateTime.setDate(QDate(year, date().month(), date().day()));
+    dateTime.setDate(QDate(year, dateTime.date().month(), dateTime.date().day()));
+}
+
+int CustomDate::month() const
+{
+    return dateTime.date().month();
+}
+
+void CustomDate::setMonth(int month)
+{
+    dateTime.setDate(QDate(dateTime.date().year(), month, dateTime.date().day()));
 }
 
 int CustomDate::day() const
@@ -34,7 +44,7 @@ int CustomDate::day() const
 
 void CustomDate::setDay(int day)
 {
-    dateTime.setDate(QDate(date().year(), date().month(), day));
+    dateTime.setDate(QDate(dateTime.date().year(), dateTime.date().month(), day));
 }
 
 int CustomDate::hour() const
@@ -67,12 +77,4 @@ void CustomDate::setSecond(int second)
     dateTime.setTime(QTime(dateTime.time().hour(), dateTime.time().minute(), second));
 }
 
-int CustomDate::month() const
-{
-    return dateTime.date().month();
-}
 
-void CustomDate::setMonth(int month)
-{
-    dateTime.setDate(QDate(dateTime.date().year(), month, dateTime.date().day()));
-}
