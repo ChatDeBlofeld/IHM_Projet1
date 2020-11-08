@@ -6,13 +6,14 @@ import QtGraphicalEffects 1.15
 
 PostItBase {
     id: shape
-    border.color: "#10000000"
+    border.color: borderColor
     border.width: 2
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
     property string setContentText
     property string setDueDateText
     property DragArea dragArea
+    property string borderColor: "#10000000"
 
     property bool active: Drag.active
 
@@ -79,7 +80,7 @@ PostItBase {
             border.color = "transparent";
         } else {
             dropShadowRect.visible = true;
-            border.color = "#10000000"
+            border.color = borderColor
         }
     }
 
@@ -105,7 +106,7 @@ PostItBase {
                 wrapMode: TextEdit.Wrap
                 font.pointSize: 14.5 * shape.scaling
                 placeholderText: qsTr("Ecrivez votre\nnote ici...")
-//                color: "#545454"
+                color: "#545454"
                 placeholderTextColor: "grey"
                 onTextChanged: {
                     var pos = content.positionAt(1, height + 1);
@@ -185,7 +186,7 @@ PostItBase {
     Rectangle {
         id: dropShadowRect
         property real offset: Math.min(parent.width*0.025, parent.height*0.025)
-        color: "#10000000"
+        color: parent.borderColor
         width: parent.width
         height: parent.height
         x: offset
