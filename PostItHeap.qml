@@ -9,8 +9,11 @@ Item {
     property DragArea newDragArea
     property real scaling: 1
 
+
     Repeater {
-        model: ["light blue", "light green", "pink"]
+        id: base
+        model: ["pink", "light green", "light blue"]
+
 
         PostItBase {
             color: modelData
@@ -27,6 +30,7 @@ Item {
         scaling: heap.scaling
         border.width: 0
         parent: heap.parent
+        color: "#f6ff78"
 
         Drag.onActiveChanged: {
             if (Drag.active === false) {
@@ -39,10 +43,16 @@ Item {
                                        setContentText: contentText,
                                        setDueDateText: dueDateText,
                                        dragArea: heap.newDragArea,
-                                       scaling: scaling
+                                       scaling: scaling,
+                                       color: color
                                    });
                     template.setContentText = "";
                     template.setDueDateText = "";
+                    color = nextColor();
+
+                    for(var i = 2; i >= 0; i--) {
+                        base.itemAt(i).color = nextColor();
+                    }
                 }
 
                 anchors.centerIn = heap;
@@ -51,5 +61,30 @@ Item {
                 anchors.centerIn = null;
             }
         }
+    }
+
+    function nextColor() {
+        if( typeof nextColor.colors == 'undefined' ) {
+                nextColor.colors = ["light blue", "light green", "pink", "#f6ff78"];
+         }
+
+        if (typeof nextColor.index == 'undefined') {
+            nextColor.index = 0;
+        }
+
+        if (typeof nextColor.shift == 'undefined') {
+            nextColor.shift = 0;
+        }
+
+        if (nextColor.index === nextColor.colors.length) {
+            nextColor.shift++;
+        }
+
+        nextColor.shift = nextColor.shift % nextColor.colors.length;
+        nextColor.index = nextColor.index % nextColor.colors.length;
+
+
+
+        return nextColor.colors[(nextColor.shift + nextColor.index++) % nextColor.colors.length];
     }
 }
