@@ -22,32 +22,32 @@ void CustomDate::setIsActive(bool value)
 
 int CustomDate::year() const
 {
-    return _year;
+    return dateTime.date().year();
 }
 
 void CustomDate::setYear(int year)
 {
-    setDate(QDate(year, date().month(), date().day()));
+    dateTime.setDate(QDate(year, date().month(), date().day()));
 }
 
 int CustomDate::day() const
 {
-    return _day;
+    return dateTime.date().day();
 }
 
 void CustomDate::setDay(int day)
 {
-    _day = day;
+    dateTime.setDate(QDate(date().year(), date().month(), day));
 }
 
 int CustomDate::hour() const
 {
-    return _hour;
+    return dateTime.time().hour();
 }
 
 void CustomDate::setHour(int hour)
 {
-    _hour = hour;
+    dateTime.setTime(QTime(hour, dateTime.time().minute(), dateTime.time().second()));
 }
 
 int CustomDate::minute() const
