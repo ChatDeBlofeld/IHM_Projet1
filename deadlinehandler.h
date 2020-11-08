@@ -13,7 +13,7 @@ private:
 public:
     explicit DeadlineHandler(QObject* parent = 0) : QObject(parent){}
 
-
+    Q_INVOKABLE void findPostits();
 
 };
 

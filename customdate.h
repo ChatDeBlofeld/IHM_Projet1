@@ -9,49 +9,51 @@ class CustomDate : public QDateTime
     Q_OBJECT
 public:
     CustomDate();
-    CustomDate(int years, int days, int hours, int minutes, int seconds);
+    CustomDate(int year, int day, int hour, int minute, int second);
 
     QDateTime toQDateTime();
 
 
 
-    Q_PROPERTY(int years READ years WRITE setYears NOTIFY yearsChanged)
-    Q_PROPERTY(int months READ months WRITE setMonths NOTIFY monthsChanged)
-    Q_PROPERTY(int days READ days WRITE setDays NOTIFY daysChanged)
-    Q_PROPERTY(int hours READ hours WRITE setHours NOTIFY hoursChanged)
-    Q_PROPERTY(int minutes READ minutes WRITE setMinutes NOTIFY minutesChanged)
-    Q_PROPERTY(int seconds READ seconds WRITE setSeconds NOTIFY secondsChanged)
+    Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
+    Q_PROPERTY(int month READ month WRITE setMonth NOTIFY monthChanged)
+    Q_PROPERTY(int day READ day WRITE setDay NOTIFY dayChanged)
+    Q_PROPERTY(int hour READ hour WRITE setHour NOTIFY hourChanged)
+    Q_PROPERTY(int minute READ minute WRITE setMinute NOTIFY minuteChanged)
+    Q_PROPERTY(int second READ second WRITE setSecond NOTIFY secondChanged)
 
     bool getIsActive() const;
     void setIsActive(bool value);
 
-    int years() const;
-    void setYears(int years);
+    int year() const;
+    void setYear(int year);
 
-    int days() const;
-    void setDays(int days);
+    int day() const;
+    void setDay(int day);
 
-    int hours() const;
-    void setHours(int hours);
+    int hour() const;
+    void setHour(int hour);
 
-    int minutes() const;
-    void setMinutes(int minutes);
+    int minute() const;
+    void setMinute(int minute);
 
-    int seconds() const;
-    void setSeconds(int seconds);
+    int second() const;
+    void setSecond(int second);
 
-    int monts() const;
-    void setMonths(int months);
+    int month() const;
+    void setMonth(int month);
 
 private:
 
+    QDateTime dateTime;
+
     bool isActive;
-    int _years;
-    int _months;
-    int _days;
-    int _hours;
-    int _minutes;
-    int _seconds;
+    int _year;
+    int _month;
+    int _day;
+    int _hour;
+    int _minute;
+    int _second;
 };
 
 #endif // CUSTOMDATE_H
