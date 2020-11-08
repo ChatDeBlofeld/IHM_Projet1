@@ -5,6 +5,9 @@ Item {
     id: heap
     height: template.height * 1.41
     width: template.width * 1.41
+    property DragArea creationDragArea
+    property DragArea newDragArea
+    property real scaling: 1
 
     Repeater {
         model: ["light blue", "light green", "pink"]
@@ -12,31 +15,37 @@ Item {
         PostItBase {
             color: modelData
             anchors.centerIn: parent
+            scaling: heap.scaling
             transform: Rotation { origin.x: width / 2; origin.y: height / 2; angle: 25 * (1 + index)}
         }
     }
 
     PostIt {
-        anchors.centerIn: parent
+        anchors.centerIn: heap
         id: template
+        dragArea: heap.creationDragArea
+        scaling: heap.scaling
+        border.width: 0
+        parent: heap.parent
 
         Drag.onActiveChanged: {
             if (Drag.active === false) {
-                if ((x + width / 2 - parent.width / 2)**2
-                        + (y + height / 2 - parent.height / 2)**2
-                        > width**2){
+                if (x > heap.x + heap.width * 0.83 || y + height < heap.y + heap.height * 0.2){
                     var c = Qt.createComponent("PostIt.qml");
                     c.createObject(heap.parent, {
-                                       x: x + heap.x,
-                                       y: y + heap.y,
+                                       x: x,
+                                       y: y,
+                                       z: heap.newDragArea.nextZ(),
                                        setContentText: contentText,
-                                       setDueDateText: dueDateText
+                                       setDueDateText: dueDateText,
+                                       dragArea: heap.newDragArea,
+                                       scaling: scaling
                                    });
                     template.setContentText = "";
                     template.setDueDateText = "";
                 }
 
-                anchors.centerIn = parent;
+                anchors.centerIn = heap;
             } else {
                 forceActiveFocus();
                 anchors.centerIn = null;
