@@ -4,16 +4,11 @@
 #include <QQuickItem>
 #include <QDateTime>
 
-class CustomDate : public QDateTime
+class CustomDate : public QObject
 {
     Q_OBJECT
 public:
     CustomDate();
-    CustomDate(int year, int day, int hour, int minute, int second);
-
-    QDateTime toQDateTime();
-
-
 
     Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)
     Q_PROPERTY(int month READ month WRITE setMonth NOTIFY monthChanged)
@@ -46,14 +41,6 @@ public:
 private:
 
     QDateTime dateTime;
-
-    bool isActive;
-    int _year;
-    int _month;
-    int _day;
-    int _hour;
-    int _minute;
-    int _second;
 };
 
 #endif // CUSTOMDATE_H

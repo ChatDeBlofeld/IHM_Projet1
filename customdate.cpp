@@ -6,9 +6,6 @@ CustomDate::CustomDate()
     isActive = false;
 }
 
-CustomDate::CustomDate(int year, int day, int hour, int minute, int second) : _year(year), _day(day), _hour(hour), _minute(minute), _second(second){
-    isActive = true;
-}
 
 bool CustomDate::getIsActive() const
 {
@@ -52,30 +49,30 @@ void CustomDate::setHour(int hour)
 
 int CustomDate::minute() const
 {
-    return _minute;
+    return dateTime.time().minute();
 }
 
 void CustomDate::setMinute(int minute)
 {
-    _minute = minute;
+    dateTime.setTime(QTime(dateTime.time().hour(), minute,  dateTime.time().second()));
 }
 
 int CustomDate::second() const
 {
-    return _second;
+    return dateTime.time().second();
 }
 
 void CustomDate::setSecond(int second)
 {
-    _second = second;
+    dateTime.setTime(QTime(dateTime.time().hour(), dateTime.time().minute(), second));
 }
 
-int CustomDate::monts() const
+int CustomDate::month() const
 {
-    return _month;
+    return dateTime.date().month();
 }
 
 void CustomDate::setMonth(int month)
 {
-    _month = month;
+    dateTime.setDate(QDate(dateTime.date().year(), month, dateTime.date().day()));
 }
