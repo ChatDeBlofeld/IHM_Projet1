@@ -115,9 +115,10 @@ PostItBase {
                 id: content
                 padding: 0
                 wrapMode: TextEdit.Wrap
-                font.pointSize: 14.5 * shape.scaling
+                font.pointSize: 16 * shape.scaling
                 placeholderText: qsTr("Ecrivez votre\nnote ici...")
-                color: "#545454"
+                property color textColor: "#545454"
+                color: textColor
                 placeholderTextColor: "grey"
                 onTextChanged: {
                     var pos = content.positionAt(1, height + 1);
@@ -145,55 +146,122 @@ PostItBase {
                 }
             }
 
-            TextField {
-                id: dueDate
-                background: Outline {
-                    border.width: 2 * shape.scaling
-                    MouseArea {
-                        id: dateArea
-                        anchors.fill: parent
-                        propagateComposedEvents: true
-                        onClicked: {
-                            dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
-                            dueDate.forceActiveFocus();
-                            shape.z = dragArea.nextZ();
+            Outline {
+                Layout.minimumHeight: 25 * shape.scaling
+                Layout.maximumWidth: container.width
+                border.width: scaling
+                anchors.bottomMargin: 15 * scaling
+                Layout.preferredWidth: dueDate.preferredWidth + (checker.visible ? fakePadding.width : 0);
+
+                RowLayout {
+                    id: dateContainer
+                    anchors.fill: parent
+                    anchors.margins: 0
+                    Layout.columnSpan: 0
+                    spacing: 0
+
+                    TextField {
+                        id: dueDate
+                        property real preferredWidth: length == 0 ? 105 * shape.scaling
+                               : contentWidth + leftPadding + rightPadding;
+                        Layout.preferredWidth: preferredWidth
+
+                        padding: 2 * shape.scaling
+                        leftPadding: 8 * shape.scaling
+                        rightPadding: 4 * shape.scaling
+                        font.italic: true
+                        font.pointSize: 12 * shape.scaling
+
+                        color: "grey"
+                        placeholderText: qsTr("Echéance...")
+                        placeholderTextColor: "dark grey"
+
+                        maximumLength: {
+                            if (container.width - contentWidth < 45 * shape.scaling) {
+                                return length;
+                            } else {
+                                return 32767;
+                            }
+                        }
+
+                        background: Rectangle {
+                            color: "transparent"
+                            MouseArea {
+                                id: dateArea
+                                anchors.fill: parent
+                                propagateComposedEvents: true
+                                onClicked: {
+                                    dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
+                                    dueDate.forceActiveFocus();
+                                    shape.z = dragArea.nextZ();
+                                }
+                            }
+                        }
+
+                        onTextChanged: {
+                            if (length == 0) {
+                                checker.visible = false;
+                            } else {
+                                checker.visible = true;
+                            }
+                            checker.valid = Math.random() > 0.5
+                            updateDate()
                         }
                     }
-                }
 
-                onTextChanged: {
-                    updateDate()
-                }
 
-                padding: 2 * shape.scaling
-                leftPadding: 8 * shape.scaling
-                rightPadding: 8 * shape.scaling
-                font.italic: true
-                font.pointSize: 12 * shape.scaling
+                    Item {
+                        id: checker
+                        visible: false
+                        Layout.preferredHeight: dateContainer.height * 0.8
+                        Layout.preferredWidth: height
+                        Layout.maximumWidth: height
+                        property bool valid: false
 
-                color: "grey"
 
-                placeholderText: qsTr("Echéance...")
-                placeholderTextColor: "dark grey"
 
-                maximumLength: {
-                    if (container.width - contentWidth < 25 * shape.scaling) {
-                        return length;
-                    } else {
-                        return 32767;
+                        Cross {
+                            id: cross
+                            visible: !parent.valid
+                            anchors.fill: checker
+
+                            ContextHelp {
+                                id: crossHelp
+                                text: "L'échéance n'a pu\nêtre interprétée.\nEssayez par\nexemple :\nSamedi 18h"
+                                scaling: shape.scaling
+                                color: Qt.darker(shape.color, 1.04)
+                                textColor: "#eb6767"
+                                triggerArea: cross
+                                textArea: content
+                            }
+
+                            onVisibleChanged: if(!visible) crossHelp.visible = false
+                        }
+
+                        Check {
+                            id: check
+                            visible: parent.valid
+                            anchors.fill: checker
+
+                            ContextHelp {
+                                id: checkHelp
+                                text: "L'échéance est\nfixée au\n" + deadline
+                                scaling: shape.scaling
+                                color: Qt.darker(shape.color, 1.04)
+                                textColor: Qt.darker(shape.color, 1.4)
+                                triggerArea: check
+                                textArea: content
+                            }
+
+                            onVisibleChanged: if(!visible) checkHelp.visible = false
+                        }
+                    }
+
+                    Rectangle {
+                        id: fakePadding
+                        Layout.minimumWidth: checker.width * 1.4
                     }
                 }
-
-                Layout.preferredWidth: {
-                    if (dueDate.length == 0) {
-                        return 105 * shape.scaling;
-                    } else {
-                        return contentWidth + leftPadding + rightPadding;
-                    }
-                }
-
-                Layout.minimumHeight: 15 * shape.scaling
-                Layout.maximumWidth: container.width
             }
         }
     }
