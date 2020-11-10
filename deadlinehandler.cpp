@@ -15,7 +15,7 @@ void DeadlineHandler::findPostits(){
         cout << "current : " << current.toString().toStdString() << endl;
         cout << "---------------------------------------------------------------" << endl << endl;
         QDateTime deadline = customDeadline->toDateTime();
-        if( deadline < current){
+        if( deadline.isValid() && deadline < current){
             qDebug() << "ALERTE pour " << p->property("contentText").toString();
             p->setProperty("alert", true);
         }

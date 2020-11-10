@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CustomDate::CustomDate() : QObject()
+CustomDate::CustomDate() : QObject(), _year(0), _month(0), _day(0), _hour(0), _minute(0), _second(0)
 {
 }
 
@@ -28,14 +28,8 @@ QDateTime CustomDate::toDateTime() const
     return QDateTime(QDate(_year, _month, _day), QTime(_hour, _minute, _second));
 }
 
-bool CustomDate::getIsActive() const
-{
-    return _isActive;
-}
-
-void CustomDate::setIsActive(bool value)
-{
-    _isActive = value;
+bool CustomDate::isValid() const {
+    return toDateTime().isValid();
 }
 
 
