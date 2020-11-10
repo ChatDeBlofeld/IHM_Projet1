@@ -379,7 +379,7 @@ PostItBase {
         // TODO : define rules here
 
         //Regexes for the different formats
-        var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{2,4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
         var dateRegex = /^(le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{2,4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
         var weekDayRegex = /^[a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
         var hourRegex = /^[0-9]{1,2}[:h]([0-9]{1,2})?/g;
@@ -390,10 +390,26 @@ PostItBase {
 
         str = str.replace("le ", "");
         str = str.replace("à ", "");
+        str = str.replace("é", "e");
+        str = str.replace("û ", "u");
         if(longDateRegex.test(str)){
             //checker.valid = true;
             console.log("long date detected");
+            var tokens = str.split(" ");
+            if (/[h:]/.test(tokens[tokens.length - 1])) {
+                var r = getHourMinute(tokens.pop());
+                hour = r[0];
+                minute = r[1];
+            }
 
+            day = tokens[0];
+            month = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"].findIndex(m => m === tokens[1]) + 1;
+
+            if (month === -1) {
+                error = true;
+            }
+
+            if (tokens.length > 2) year = tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
         }else if(dateRegex.test(str)){
             //checker.valid = true;
             console.log("date detected");
