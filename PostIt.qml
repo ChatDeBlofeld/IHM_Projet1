@@ -338,7 +338,6 @@ PostItBase {
     }
 
     function getHourMinute(str) {
-        console.log("str = " + str)
         var tokens
 
         tokens = str.split(/[h:]/);
@@ -362,22 +361,11 @@ PostItBase {
         hour = 9;
         minute = second = 0;
         year = month = day = -1; // -1 means unset
-        /*
-        var d = new Date();
-        var year = d.getFullYear();
-        var month = d.getMonth() + 1;
-        var day = d.getDate();
-        var hour = 45;
-        var minute = 0;
-        var second = 0;
-        */
 
         //Date longue:  (le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
         //Date:         (le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
         //Jour semaine: [a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
         //Heure:        [0-9]{1,2}[:h]([0-9]{1,2})?
-
-        // TODO : define rules here
 
         //Regexes for the different formats
         var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
@@ -387,7 +375,6 @@ PostItBase {
 
         checker.valid = false;
         var error = false;
-        //console.log("current date: " + current.toString());
 
         str = str.replace("le ", "");
         str = str.replace("à ", "");
@@ -395,7 +382,6 @@ PostItBase {
         str = str.replace("û ", "u");
         if(longDateRegex.test(str)){
             //checker.valid = true;
-            console.log("long date detected");
             var tokens = str.split(" ");
             if (/[h:]/.test(tokens[tokens.length - 1])) {
                 var r = getHourMinute(tokens.pop());
@@ -412,8 +398,6 @@ PostItBase {
 
             if (tokens.length > 2) year = tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
         }else if(dateRegex.test(str)){
-            //checker.valid = true;
-            console.log("date detected");
             var tokens = str.split(" ");
             if (tokens.length > 1) {
                 var r = getHourMinute(tokens[1]);
@@ -425,7 +409,12 @@ PostItBase {
             tokens = tokens[0].split(/[./]/);
             day = tokens[0];
             month = tokens[1];
-            if (tokens.length > 2) year = tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
+            if (tokens.length > 2){
+                year = tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
+                if (tokens[2].length === 3) error = true;
+            }
+
+
         }else if(weekDayRegex.test(str)){
             var weekDays = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
             var tokens = str.split(" ");
@@ -466,8 +455,6 @@ PostItBase {
             hour = r[0];
             minute = r[1];
 
-            //console.log("hour: " + hour + "minute: " + minute);
-
         }else{
             error = true;
         }
@@ -475,6 +462,7 @@ PostItBase {
 
         if(error){
             checker.valid = false;
+            deadline.reset();
         }else{
             if(day === -1){
                 if(current.getHours() > hour || (current.getHours() == hour && current.getMinutes() >= minute)){
@@ -484,7 +472,7 @@ PostItBase {
                     year = nextDayCopy.getFullYear();
                 }else{
                     day = current.getDate();
-                    month = current.getMonth() + 1;
+                    month = current.getMonth() + 1; //add 1 to transition to QDateTime
                     year = current.getFullYear();
                 }
             }
@@ -498,7 +486,7 @@ PostItBase {
             }
 
 
-            console.log("year: " + year + " month: " + month + " day: " + day + " hour: " + hour + " minute: " + minute);
+            //console.log("year: " + year + " month: " + month + " day: " + day + " hour: " + hour + " minute: " + minute);
 
             deadline = Qt.createQmlObject(
                 `import Backend 1.0;
