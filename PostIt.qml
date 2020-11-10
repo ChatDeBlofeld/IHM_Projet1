@@ -331,19 +331,20 @@ PostItBase {
         }
     }
 
-    function nextDay(date) {
+    function addDays(date, n) {
       const copy = new Date(Number(date))
-      copy.setDate(date.getDate() + 1)
+      copy.setDate(date.getDate() + n)
       return copy;
     }
 
     function getHourMinute(str) {
+        console.log("str = " + str)
         var tokens
 
         tokens = str.split(/[h:]/);
 
         var hour = tokens[0];
-        var minute = -1;
+        var minute = 0;
         if(tokens[1] !== "") minute = tokens[1];
 
         return [hour, minute];
@@ -409,27 +410,41 @@ PostItBase {
             month = tokens[1];
             year =  tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
         }else if(weekDayRegex.test(str)){
-            //checker.valid = true;
-            console.log("week day detected");
             var weekDays = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
             var tokens = str.split(" ");
             var index = weekDays.indexOf(tokens[0])
             if(index !== -1){
-                day = index + 1;
-                if(tokens[1] !== ""){
-                    var hourIndex = tokens[1] ==="à"? 2 : 1;
+                var hourIndex = tokens[1] === "à" ? 2 : 1;
+                if(tokens[hourIndex] !== undefined){
                     var r = getHourMinute(tokens[hourIndex])
                     hour = r[0];
                     minute = r[1];
+                }
+
+                var daysDiff = index - current.getDay() + 1;
+                if(daysDiff < 0) daysDiff += 7
+                if(daysDiff === 0){
+                    if(current.getHours() > hour || (current.getHours() == hour && current.getMinutes() >= minute)){
+                        const nextDayCopy = addDays(current, 7);
+                        day = nextDayCopy.getDate();
+                        month = nextDayCopy.getMonth() + 1; //add 1 to transition to QDateTime
+                        year = nextDayCopy.getFullYear();
+                    }else{
+                        day = current.getDate();
+                        month = current.getMonth() + 1;
+                        year = current.getFullYear();
+                    }
+                }else{
+                    const nextDayCopy = addDays(current, daysDiff);
+                    day = nextDayCopy.getDate();
+                    month = nextDayCopy.getMonth() + 1; //add 1 to transition to QDateTime
+                    year = nextDayCopy.getFullYear();
                 }
             }else{
                 error = true;
             }
 
-
         }else if(hourRegex.test(str)){
-            //checker.valid = true;
-            console.log("hour detected");
             var r = getHourMinute(str);
             hour = r[0];
             minute = r[1];
@@ -445,9 +460,8 @@ PostItBase {
             checker.valid = false;
         }else{
             if(day === -1){
-                if(current.getHours() > hour || (current.getHours() === hour && current.getMinutes() >= minute)){
-                    //day = (current.getTime() + 1*60*60*1000).getDay() //add a day (thank you javascript)
-                    const nextDayCopy = nextDay(current);
+                if(current.getHours() > hour || (current.getHours() == hour && current.getMinutes() >= minute)){
+                    const nextDayCopy = addDays(current, 1);
                     day = nextDayCopy.getDate();
                     month = nextDayCopy.getMonth() + 1; //add 1 to transition to QDateTime
                     year = nextDayCopy.getFullYear();
