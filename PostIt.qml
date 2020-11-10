@@ -25,6 +25,7 @@ PostItBase {
     property string setDueDateText
     property DragArea dragArea
     property string borderColor: "#10000000"
+    property bool alert: false
 
     property bool active: Drag.active
 
@@ -89,7 +90,28 @@ PostItBase {
         if (flag) {
             dropShadowRect.visible = false;
             border.color = "transparent";
+            timerAlert.stop();
+            alertArea.visible = false;
+
+            if (contentText === "") {
+                content.visible = false;
+            }
+
+            if (dueDateText === "") {
+                dateContainer.visible = false;
+            }
+            checker.visible = false;
         } else {
+            if (alert) {
+                timerAlert.start()
+            }
+
+            if (dueDateText !== "") {
+                checker.visible = true;
+            }
+
+            content.visible = true;
+            dateContainer.visible = true;
             dropShadowRect.visible = true;
             border.color = borderColor
         }
@@ -97,6 +119,7 @@ PostItBase {
 
     MouseArea {
         id: backgroundArea
+        z: 10
         anchors.fill: parent
         drag.target: parent
         drag.filterChildren: true
@@ -147,14 +170,15 @@ PostItBase {
             }
 
             Outline {
+                id: dateContainer
                 Layout.minimumHeight: 25 * shape.scaling
                 Layout.maximumWidth: container.width
                 border.width: scaling
                 anchors.bottomMargin: 15 * scaling
                 Layout.preferredWidth: dueDate.preferredWidth + (checker.visible ? fakePadding.width : 0);
+                Layout.alignment: Qt.AlignBottom
 
                 RowLayout {
-                    id: dateContainer
                     anchors.fill: parent
                     anchors.margins: 0
                     Layout.columnSpan: 0
@@ -278,6 +302,34 @@ PostItBase {
         radius: parent.radius + 2
     }
 
+    Rectangle {
+        id: alertArea
+        anchors.fill: parent
+        color: "#eb6767"
+        visible: false
+    }
+
+    onAlertChanged: {
+        if (!content.readOnly) {
+            if (alert) {
+                timerAlert.start();
+            } else {
+                timerAlert.stop();
+                alertArea.visible = false;
+            }
+        }
+    }
+
+    Timer {
+        id: timerAlert
+        interval: 500
+        repeat: true
+
+        onTriggered: {
+            alertArea.visible = !alertArea.visible;
+        }
+    }
+
 /*
     CustomDate{
         year: 2020
@@ -290,6 +342,7 @@ PostItBase {
 */
 
     function updateDate(){ 
+        alert = false;
         var d = dueDate.text
 
         if (d !== "secret") {
