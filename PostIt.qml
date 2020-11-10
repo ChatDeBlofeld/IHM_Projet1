@@ -436,16 +436,16 @@ PostItBase {
             deadline = Qt.createQmlObject(
                 `import Backend 1.0;
                 CustomDate {
-                    year: 2020
-                    month: 11
-                    day: 10
-                    hour: 19
-                    minute: 0
-                    second: 0
+                    year: ${year}
+                    month: ${month}
+                    day: ${day}
+                    hour: ${hour}
+                    minute: ${minute}
+                    second: ${second}
                 }`,
                 shape);
 
-            checker.valid = true;
+            checker.valid = deadline.isValid();
         }
 
 
