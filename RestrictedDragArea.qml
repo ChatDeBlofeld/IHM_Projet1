@@ -25,12 +25,12 @@ DragArea {
 
         if (isOnTrash(postIt) && !onTrash) {
             onTrash = true;
-            hoveredTrash(postIt);
+            hoveredTrash();
         }
 
         if (!isOnTrash(postIt) && onTrash) {
             onTrash = false;
-            unHoveredTrash(postIt);
+            unHoveredTrash();
         }
 
         return {minX: minX, minY: minY, maxX: maxX - postIt.width, maxY: maxY - postIt.height};

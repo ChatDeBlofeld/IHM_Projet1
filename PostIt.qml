@@ -204,7 +204,6 @@ PostItBase {
                             } else {
                                 checker.visible = true;
                             }
-                            checker.valid = Math.random() > 0.5
                             updateDate()
                         }
                     }
@@ -245,7 +244,7 @@ PostItBase {
 
                             ContextHelp {
                                 id: checkHelp
-                                text: "L'échéance est\nfixée au\n" + deadline
+                                text: "L'échéance est\nfixée au\n" + deadline.asString()
                                 scaling: shape.scaling
                                 color: Qt.darker(shape.color, 1.04)
                                 textColor: Qt.darker(shape.color, 1.4)
@@ -291,15 +290,18 @@ PostItBase {
 */
 
     function updateDate(){ 
-        //var dateString = deadline.toLocaleDateString();
-        deadline = createDate(new Date());
-        console.log(deadline.year)
-        deadline.year = 2300;
-        console.log(deadline.year)
+        var d = dueDate.text
+
+        if (d !== "secret") {
+            checker.valid = false;
+        } else {
+            checker.valid = true;
+            createDate(new Date());
+        }
     }
 
     function createDate(date) {
-        return deadline = Qt.createQmlObject(
+        deadline = Qt.createQmlObject(
                 `import Backend 1.0;
                 CustomDate {
                     year: ${date.getFullYear()}

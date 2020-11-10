@@ -12,13 +12,18 @@ CustomDate::CustomDate() : QObject()
 CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int second) : _year(year), _month(month), _day(day), _hour(hour), _minute(minute), _second(second) {
 }
 
+QString CustomDate::asString() const
+{
+    return toDateTime().toString("dd.MM.yyyy à hh:mm");
+}
+
 
 ostream &operator<<( ostream &output, const CustomDate &d ) {
          output << d.year() << "-" << d.month() << "-" << d.day() << " " << d.hour() << ":" << d.minute() << ":" << d.second();
          return output;
       }
 
-QDateTime CustomDate::toDateTime()
+QDateTime CustomDate::toDateTime() const
 {
     return QDateTime(QDate(_year, _month, _day), QTime(_hour, _minute, _second));
 }

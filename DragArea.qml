@@ -11,8 +11,8 @@ Item {
 
     property bool onTrash: false
 
-    signal hoveredTrash(PostIt postIt)
-    signal unHoveredTrash(PostIt postIt)
+    signal hoveredTrash()
+    signal unHoveredTrash()
 
     function newArea(postIt) {
         var minX = 0;
@@ -22,12 +22,12 @@ Item {
 
         if (isOnTrash(postIt) && !onTrash) {
             onTrash = true;
-            hoveredTrash(postIt);
+            hoveredTrash();
         }
 
         if (!isOnTrash(postIt) && onTrash) {
             onTrash = false;
-            unHoveredTrash(postIt);
+            unHoveredTrash();
         }
 
         return {minX: minX, minY: minY, maxX: maxX - postIt.width, maxY: maxY - postIt.height};
