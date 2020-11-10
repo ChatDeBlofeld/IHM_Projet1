@@ -6,12 +6,8 @@ DragArea {
     property real heapWidth
     property real heapHeight
 
-    property bool onTrash: false
-
     signal trashed(PostIt postIt)
     signal untrashed(PostIt postIt)
-    signal hoveredTrash(PostIt postIt)
-    signal unHoveredTrash(PostIt postIt)
 
     function newArea(postIt) {
         var minX = 0;
@@ -77,9 +73,7 @@ DragArea {
         untrashed(postIt);
     }
 
-    function isOnTrash(postIt) {
-        return postIt.x > trashX - 3 / 4 * trashWidth && postIt.y > trashY - 3 / 4 * trashHeight;
-    }
+
 
     function nextZ() {
         if( typeof nextZ.counter == 'undefined' ) {

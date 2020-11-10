@@ -9,18 +9,25 @@ Item {
     property real trashWidth
     property real trashHeight
 
+    property bool onTrash: false
+
+    signal hoveredTrash(PostIt postIt)
+    signal unHoveredTrash(PostIt postIt)
+
     function newArea(postIt) {
         var minX = 0;
         var minY = 0;
         var maxX = maxWidth;
         var maxY = maxHeight;
 
-        if (postIt.x + postIt.width > trashX ) {
-            maxY = trashY;
+        if (isOnTrash(postIt) && !onTrash) {
+            onTrash = true;
+            hoveredTrash(postIt);
         }
 
-        if (postIt.y + postIt.height > trashY) {
-            maxX = trashX;
+        if (!isOnTrash(postIt) && onTrash) {
+            onTrash = false;
+            unHoveredTrash(postIt);
         }
 
         return {minX: minX, minY: minY, maxX: maxX - postIt.width, maxY: maxY - postIt.height};
@@ -36,6 +43,10 @@ Item {
 
     function press(postIt) {
 
+    }
+
+    function isOnTrash(postIt) {
+        return postIt.x > trashX - 3 / 4 * trashWidth && postIt.y > trashY - 3 / 4 * trashHeight;
     }
 
     function nextZ() {
