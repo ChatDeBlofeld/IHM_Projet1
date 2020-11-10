@@ -416,7 +416,7 @@ PostItBase {
             checker.valid = false;
         }else{
             if(day === -1){
-                if(current.getHours() >= hour && current.getMinutes() >= minute){
+                if(current.getHours() > hour || (current.getHours() === hour && current.getMinutes() >= minute)){
                     //day = (current.getTime() + 1*60*60*1000).getDay() //add a day (thank you javascript)
                     const nextDayCopy = nextDay(current);
                     day = nextDayCopy.getDate();
