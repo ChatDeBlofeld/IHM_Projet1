@@ -310,13 +310,14 @@ PostItBase {
     }
 
     onAlertChanged: {
-        if (!content.readOnly) {
-            if (alert) {
+        if (alert) {
+            if (!content.readOnly) {
                 timerAlert.start();
-            } else {
-                timerAlert.stop();
-                alertArea.visible = false;
+                shape.z = dragArea.nextZ();
             }
+        } else {
+            timerAlert.stop();
+            alertArea.visible = false;
         }
     }
 
