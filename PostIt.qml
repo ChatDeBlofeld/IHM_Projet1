@@ -338,7 +338,7 @@ PostItBase {
     }
 
     function getHourMinute(str) {
-        var tokens;
+        var tokens, error;
 
         if(str.includes("h")){
             tokens = str.split("h");
@@ -352,7 +352,7 @@ PostItBase {
         var minute = -1;
         if(tokens[1] !== "") minute = tokens[1];
 
-        return [hour, minute];
+        return [error, hour, minute];
     }
 
     function updateDate(){ 
@@ -405,8 +405,12 @@ PostItBase {
             var tokens = str.split(" ");
             if (tokens.length > 1) {
                 var r = getHourMinute(tokens[1]);
-                hour = r[0];
-                minute = r[1];
+                if(r[0] === true){
+                    error = true;
+                }
+
+                hour = r[1];
+                minute = r[2];
             }
 
 
