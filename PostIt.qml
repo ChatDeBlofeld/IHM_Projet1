@@ -338,21 +338,15 @@ PostItBase {
     }
 
     function getHourMinute(str) {
-        var tokens, error;
+        var tokens
 
-        if(str.includes("h")){
-            tokens = str.split("h");
-        }else if(str.includes(":")){
-            tokens = str.split(":");
-        }else{
-            error = true;
-        }
+        tokens = str.split(/[h:]/);
 
         var hour = tokens[0];
         var minute = -1;
         if(tokens[1] !== "") minute = tokens[1];
 
-        return [error, hour, minute];
+        return [hour, minute];
     }
 
     function updateDate(){ 
@@ -405,15 +399,15 @@ PostItBase {
             var tokens = str.split(" ");
             if (tokens.length > 1) {
                 var r = getHourMinute(tokens[1]);
-                if(r[0] === true){
-                    error = true;
-                }
 
-                hour = r[1];
-                minute = r[2];
+                hour = r[0];
+                minute = r[1];
             }
 
-
+            tokens = tokens[0].split(/[./]/);
+            day = tokens[0];
+            month = tokens[1];
+            year =  tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
         }else if(weekDayRegex.test(str)){
             //checker.valid = true;
             console.log("week day detected");
