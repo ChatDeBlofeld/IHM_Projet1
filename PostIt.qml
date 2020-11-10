@@ -26,6 +26,7 @@ PostItBase {
     property DragArea dragArea
     property string borderColor: "#10000000"
     property bool alert: false
+    property bool justCreated: true
 
     property bool active: Drag.active
 
@@ -66,7 +67,10 @@ PostItBase {
     }
 
     onScalingChanged: {
-        var r = dragArea.handleZoom(this);
+        if(!justCreated) {
+            var r = dragArea.handleZoom(this);
+        }
+        justCreated = false;
     }
 
     Drag.active: {
