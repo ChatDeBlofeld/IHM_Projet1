@@ -71,3 +71,9 @@ Concernant l'échéance nécessaire pour définir un rappel, il a été jugé qu
 Nous avons donc pris une toute autre approche qui consiste à laisser les utilisateurs écrire ce qu'ils souhaitent, comme ils le feraient sur du papier. Le programme tente d'interpréter cette valeur en temps réel et produit un retour sous forme d'une petite icône verte ou rouge indiquant si l'échéance a pu être correctement interprétée ou non. En passant la souris sur l'icône, des informations supplémentaires sont fournies ainsi qu'un exemple valide (voir captures d'écran ci-dessus).
 
 Lorsqu'un rappel est activé, la note concernée est mise au premier plan afin d'éviter qu'elle ne soit invisible sous plusieurs autres couches. Celle-ci clignote ensuite en rouge jusqu'à ce qu'elle soit détruite ou que son échéance soit mise à jour.
+
+
+## Améliorations envisageables
+L'amélioration la plus impactante qui pourrait être développée est la persistance des données. Dans l'état actuel, le tableau est vide lorsqu'on lance l'application. C'est une fonctionnalité qui ajouterait beaucoup à un produit final, mais nous ne l'avons pas jugée prioritaire car notre but était avant tout de développer une interface.  
+Une option permettant de changer la couleur d'un pense-bête après sa création serait aussi envisageable, par-exemple au moyen de petites pastilles de couleur cliquables sur le côté du pense-bête, toujours afin de garder la procédure la plus simple possible.  
+Il serait toujours possible de penser à d'autres fonctionnalités à ajouter, cependant comme dit plus tôt la philosophie de cette application est d'être la plus simple et la moins chargée possible. Il est donc dans cet intérêt de limiter le nombre de fonctionnalités.
