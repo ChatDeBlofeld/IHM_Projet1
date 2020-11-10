@@ -331,8 +331,26 @@ PostItBase {
         }
     }
 
+    function nextDay(date) {
+      const copy = new Date(Number(date))
+      copy.setDate(date.getDate() + 1)
+      return copy;
+    }
+
     function updateDate(){ 
+        var str = dueDate.text;
+
         alert = false;
+        const current = new Date();
+
+
+        var year, month, day, hour, minute, second;
+
+        //default values
+        hour = 9;
+        minute = second = 0;
+        year = month = day = -1; // -1 means unset
+        /*
         var d = new Date();
         var year = d.getFullYear();
         var month = d.getMonth() + 1;
@@ -340,20 +358,97 @@ PostItBase {
         var hour = 45;
         var minute = 0;
         var second = 0;
+        */
+
+        //Date longue:  (le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
+        //Date:         (le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
+        //Jour semaine: [a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
+        //Heure:        [0-9]{1,2}[:h]([0-9]{1,2})?
 
         // TODO : define rules here
 
-        deadline = Qt.createQmlObject(
-            `import Backend 1.0;
-            CustomDate {
-                year: ${year}
-                month: ${month}
-                day: ${day}
-                hour: ${hour}
-                minute: ${minute}
-                second: ${second}
-            }`,
-            shape);
-        checker.valid = deadline.isValid();
+        //Regexes for the different formats
+        var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var dateRegex = /^(le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var weekDayRegex = /^[a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var hourRegex = /^[0-9]{1,2}[:h]([0-9]{1,2})?/g;
+
+        checker.valid = false;
+        var error = false;
+        //console.log("current date: " + current.toString());
+
+        if(longDateRegex.test(str)){
+            //checker.valid = true;
+            console.log("long date detected");
+
+        }else if(dateRegex.test(str)){
+            //checker.valid = true;
+            console.log("date detected");
+
+        }else if(weekDayRegex.test(str)){
+            //checker.valid = true;
+            console.log("week day detected");
+
+        }else if(hourRegex.test(str)){
+            //checker.valid = true;
+            console.log("hour detected");
+            var tokens;
+
+            if(str.includes("h")){
+                tokens = str.split("h");
+            }else if(str.includes(":")){
+                tokens = str.split(":");
+            }else{
+                error = true;
+            }
+
+            hour = tokens[0];
+            if(tokens[1] !== "") minute = tokens[1];
+
+            //console.log("hour: " + hour + "minute: " + minute);
+
+        }else{
+            error = true;
+        }
+
+
+        if(error){
+            checker.valid = false;
+        }else{
+            if(day === -1){
+                if(current.getHours() >= hour && current.getMinutes() >= minute){
+                    //day = (current.getTime() + 1*60*60*1000).getDay() //add a day (thank you javascript)
+                    const nextDayCopy = nextDay(current);
+                    day = nextDayCopy.getDate();
+                    month = nextDayCopy.getMonth() + 1; //add 1 to transition to QDateTime
+                    year = nextDayCopy.getFullYear();
+                }else{
+                    day = current.getDate();
+                    month = current.getMonth() + 1;
+                    year = current.getFullYear();
+                }
+
+            }
+
+
+            console.log("year: " + year + " month: " + month + " day: " + day + " hour: " + hour + " minute: " + minute);
+
+            deadline = Qt.createQmlObject(
+                `import Backend 1.0;
+                CustomDate {
+                    year: 2020
+                    month: 11
+                    day: 10
+                    hour: 19
+                    minute: 0
+                    second: 0
+                }`,
+                shape);
+
+            checker.valid = true;
+        }
+
+
+
     }
 }
