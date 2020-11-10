@@ -4,8 +4,9 @@
 
 using namespace std;
 
-CustomDate::CustomDate() : QObject(), _year(0), _month(0), _day(0), _hour(0), _minute(0), _second(0)
+CustomDate::CustomDate() : QObject()
 {
+    reset();
 }
 
 
@@ -15,6 +16,15 @@ CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int s
 QString CustomDate::asString() const
 {
     return toDateTime().toString("dd.MM.yyyy à hh:mm");
+}
+
+void CustomDate::reset() {
+    _year = 0;
+    _month = 0;
+    _day = 0;
+    _hour = 0;
+    _minute = 0;
+    _second = 0;
 }
 
 

@@ -33,6 +33,7 @@ public:
     QDateTime toDateTime() const;
 
     Q_INVOKABLE bool isValid() const;
+    Q_INVOKABLE void reset();
 
     int year() const;
     void setYear(int year);
