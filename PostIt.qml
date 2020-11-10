@@ -343,7 +343,7 @@ PostItBase {
         tokens = str.split(/[h:]/);
 
         var hour = tokens[0];
-        var minute = -1;
+        var minute = 0;
         if(tokens[1] !== "") minute = tokens[1];
 
         return [hour, minute];
@@ -388,14 +388,15 @@ PostItBase {
         var error = false;
         //console.log("current date: " + current.toString());
 
-        str.replace("le ", "");
-        str.replace("à ", "");
+        str = str.replace("le ", "");
+        str = str.replace("à ", "");
         if(longDateRegex.test(str)){
             //checker.valid = true;
             console.log("long date detected");
 
         }else if(dateRegex.test(str)){
             //checker.valid = true;
+            console.log("date detected");
             var tokens = str.split(" ");
             if (tokens.length > 1) {
                 var r = getHourMinute(tokens[1]);
@@ -407,7 +408,7 @@ PostItBase {
             tokens = tokens[0].split(/[./]/);
             day = tokens[0];
             month = tokens[1];
-            year =  tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
+            if (tokens.length > 2) year = tokens[2] < 100 ? 2000 + parseInt(tokens[2]) : tokens[2];
         }else if(weekDayRegex.test(str)){
             //checker.valid = true;
             console.log("week day detected");
@@ -452,7 +453,14 @@ PostItBase {
                     month = current.getMonth() + 1;
                     year = current.getFullYear();
                 }
+            }
 
+            if(year === -1){
+                if(current.getMonth() + 1 > month || (current.getMonth() + 1 === month && current.getDate() > day)){
+                    year = current.getFullYear() + 1;
+                }else{
+                    year = current.getFullYear();
+                }
             }
 
 
