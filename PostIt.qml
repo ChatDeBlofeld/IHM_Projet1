@@ -12,12 +12,12 @@ PostItBase {
     border.color: borderColor
     border.width: 2
     property CustomDate deadline: CustomDate{
-        year: 2023
-        month: 11
-        day: 8
-        hour: 22
-        minute: 48
-        second: 10
+        year: 0
+        month: 0
+        day: 0
+        hour: 0
+        minute: 0
+        second: 0
     }
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
@@ -331,40 +331,29 @@ PostItBase {
         }
     }
 
-/*
-    CustomDate{
-        year: 2020
-        month: 11
-        day: 8
-        hour: 22
-        minute: 48
-        second: 10
-    }
-*/
-
     function updateDate(){ 
         alert = false;
-        var d = dueDate.text
+        var d = new Date();
+        var year = d.getFullYear();
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var hour = 45;
+        var minute = 0;
+        var second = 0;
 
-        if (d !== "secret") {
-            checker.valid = false;
-        } else {
-            checker.valid = true;
-            createDate(new Date());
-        }
-    }
+        // TODO : define rules here
 
-    function createDate(date) {
         deadline = Qt.createQmlObject(
-                `import Backend 1.0;
-                CustomDate {
-                    year: ${date.getFullYear()}
-                    month: ${date.getMonth() + 1}
-                    day: ${date.getDate()}
-                    hour: ${date.getHours()}
-                    minute: ${date.getMinutes()}
-                    second: ${date.getSeconds()}
-                }`,
+            `import Backend 1.0;
+            CustomDate {
+                year: ${year}
+                month: ${month}
+                day: ${day}
+                hour: ${hour}
+                minute: ${minute}
+                second: ${second}
+            }`,
             shape);
+        checker.valid = deadline.isValid();
     }
 }

@@ -32,8 +32,8 @@ public:
 
     QDateTime toDateTime() const;
 
-    bool getIsActive() const;
-    void setIsActive(bool value);
+    Q_INVOKABLE bool isValid() const;
+    Q_INVOKABLE void reset();
 
     int year() const;
     void setYear(int year);
@@ -55,7 +55,6 @@ public:
 
 
 private:
-    bool _isActive;
     int _year;
     int _month;
     int _day;
