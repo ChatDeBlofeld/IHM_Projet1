@@ -332,6 +332,9 @@ PostItBase {
     }
 
     function updateDate(){ 
+        var str = dueDate.text;
+
+
         alert = false;
         var d = new Date();
         var year = d.getFullYear();
@@ -341,7 +344,47 @@ PostItBase {
         var minute = 0;
         var second = 0;
 
+        //Date longue:  (le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
+        //Date:         (le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
+        //Jour semaine: [a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?
+        //Heure:        [0-9]{1,2}[:h]([0-9]{1,2})?
+
         // TODO : define rules here
+
+        const formats = {
+            LONG_DATE: '',
+            DATE: '',
+            WEEK_DAY: '',
+            HOUR: ''
+        }
+        var format;
+
+
+        var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var dateRegex = /^(le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var weekDayRegex = /^[a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var hourRegex = /^[0-9]{1,2}[:h]([0-9]{1,2})?/g;
+
+        console.log(str);
+
+        checker.valid = false;
+        if(longDateRegex.test(str)){
+            format = formats.LONG_DATE;
+            checker.valid = true;
+            console.log("long date");
+        }else if(dateRegex.test(str)){
+            format = formats.DATE;
+            checker.valid = true;
+            console.log("date");
+        }else if(weekDayRegex.test(str)){
+            format = formats.WEEK_DAY;
+            checker.valid = true;
+            console.log("week day");
+        }else if(hourRegex.test(str)){
+            format = formats.HOUR;
+            checker.valid = true;
+            console.log("hour");
+        }
 
         deadline = Qt.createQmlObject(
             `import Backend 1.0;
@@ -354,6 +397,6 @@ PostItBase {
                 second: ${second}
             }`,
             shape);
-        checker.valid = deadline.isValid();
+        //checker.valid = deadline.isValid();
     }
 }
