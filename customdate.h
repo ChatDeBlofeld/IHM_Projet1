@@ -28,7 +28,9 @@ public:
         _second = cd.second();
     }
 
-    QDateTime toDateTime();
+    Q_INVOKABLE QString asString() const;
+
+    QDateTime toDateTime() const;
 
     bool getIsActive() const;
     void setIsActive(bool value);

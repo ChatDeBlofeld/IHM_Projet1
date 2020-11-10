@@ -17,6 +17,7 @@ void DeadlineHandler::findPostits(){
         QDateTime deadline = customDeadline->toDateTime();
         if( deadline < current){
             qDebug() << "ALERTE pour " << p->property("contentText").toString();
+            p->setProperty("alert", true);
         }
     }
 }

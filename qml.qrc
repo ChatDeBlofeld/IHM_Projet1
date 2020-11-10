@@ -9,5 +9,8 @@
         <file>DragArea.qml</file>
         <file>RestrictedDragArea.qml</file>
         <file>TrashStack.qml</file>
+        <file>Cross.qml</file>
+        <file>Check.qml</file>
+        <file>ContextHelp.qml</file>
     </qresource>
 </RCC>

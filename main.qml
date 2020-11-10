@@ -19,9 +19,17 @@ Window {
         trashWidth: trash.width
         trashX: trash.x
         trashY: trash.y
+
+        onHoveredTrash: {
+            trash.scale = 1.5;
+        }
+
+        onUnHoveredTrash: {
+            trash.scale = 1;
+        }
     }
 
-    readonly property DragArea postItDragArea: RestrictedDragArea {
+    readonly property RestrictedDragArea postItDragArea: RestrictedDragArea {
         maxWidth: mainFrame.width
         maxHeight: mainFrame.height
         heapHeight: heap.height

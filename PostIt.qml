@@ -8,16 +8,16 @@ import Backend 1.0
 PostItBase {
     id: shape
     objectName: "Postit"
+
     border.color: borderColor
     border.width: 2
-    property CustomDate deadline:
-        CustomDate{
-            year: 2020
-            month: 11
-            day: 9
-            hour: 00
-            minute: 22
-            second: 10
+    property CustomDate deadline: CustomDate{
+        year: 2023
+        month: 11
+        day: 8
+        hour: 22
+        minute: 48
+        second: 10
     }
     readonly property string contentText: content.text
     readonly property string dueDateText: dueDate.text
@@ -25,6 +25,7 @@ PostItBase {
     property string setDueDateText
     property DragArea dragArea
     property string borderColor: "#10000000"
+    property bool alert: false
 
     property bool active: Drag.active
 
@@ -89,7 +90,28 @@ PostItBase {
         if (flag) {
             dropShadowRect.visible = false;
             border.color = "transparent";
+            timerAlert.stop();
+            alertArea.visible = false;
+
+            if (contentText === "") {
+                content.visible = false;
+            }
+
+            if (dueDateText === "") {
+                dateContainer.visible = false;
+            }
+            checker.visible = false;
         } else {
+            if (alert) {
+                timerAlert.start()
+            }
+
+            if (dueDateText !== "") {
+                checker.visible = true;
+            }
+
+            content.visible = true;
+            dateContainer.visible = true;
             dropShadowRect.visible = true;
             border.color = borderColor
         }
@@ -97,6 +119,7 @@ PostItBase {
 
     MouseArea {
         id: backgroundArea
+        z: 10
         anchors.fill: parent
         drag.target: parent
         drag.filterChildren: true
@@ -115,9 +138,10 @@ PostItBase {
                 id: content
                 padding: 0
                 wrapMode: TextEdit.Wrap
-                font.pointSize: 14.5 * shape.scaling
+                font.pointSize: 16 * shape.scaling
                 placeholderText: qsTr("Ecrivez votre\nnote ici...")
-                color: "#545454"
+                property color textColor: "#545454"
+                color: textColor
                 placeholderTextColor: "grey"
                 onTextChanged: {
                     var pos = content.positionAt(1, height + 1);
@@ -145,55 +169,122 @@ PostItBase {
                 }
             }
 
-            TextField {
-                id: dueDate
-                background: Outline {
-                    border.width: 2 * shape.scaling
-                    MouseArea {
-                        id: dateArea
-                        anchors.fill: parent
-                        propagateComposedEvents: true
-                        onClicked: {
-                            dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
-                            dueDate.forceActiveFocus();
-                            shape.z = dragArea.nextZ();
+            Outline {
+                id: dateContainer
+                Layout.minimumHeight: 25 * shape.scaling
+                Layout.maximumWidth: container.width
+                border.width: scaling
+                anchors.bottomMargin: 15 * scaling
+                Layout.preferredWidth: dueDate.preferredWidth + (checker.visible ? fakePadding.width : 0);
+                Layout.alignment: Qt.AlignBottom
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: 0
+                    Layout.columnSpan: 0
+                    spacing: 0
+
+                    TextField {
+                        id: dueDate
+                        property real preferredWidth: length == 0 ? 105 * shape.scaling
+                               : contentWidth + leftPadding + rightPadding;
+                        Layout.preferredWidth: preferredWidth
+
+                        padding: 2 * shape.scaling
+                        leftPadding: 8 * shape.scaling
+                        rightPadding: 4 * shape.scaling
+                        font.italic: true
+                        font.pointSize: 12 * shape.scaling
+
+                        color: "grey"
+                        placeholderText: qsTr("Echéance...")
+                        placeholderTextColor: "dark grey"
+
+                        maximumLength: {
+                            if (container.width - contentWidth < 45 * shape.scaling) {
+                                return length;
+                            } else {
+                                return 32767;
+                            }
+                        }
+
+                        background: Rectangle {
+                            color: "transparent"
+                            MouseArea {
+                                id: dateArea
+                                anchors.fill: parent
+                                propagateComposedEvents: true
+                                onClicked: {
+                                    dueDate.cursorPosition = dueDate.positionAt(mouseX, mouseY);
+                                    dueDate.forceActiveFocus();
+                                    shape.z = dragArea.nextZ();
+                                }
+                            }
+                        }
+
+                        onTextChanged: {
+                            if (length == 0) {
+                                checker.visible = false;
+                            } else {
+                                checker.visible = true;
+                            }
+                            updateDate()
                         }
                     }
-                }
 
-                onTextChanged: {
-                    updateDate()
-                }
 
-                padding: 2 * shape.scaling
-                leftPadding: 8 * shape.scaling
-                rightPadding: 8 * shape.scaling
-                font.italic: true
-                font.pointSize: 12 * shape.scaling
+                    Item {
+                        id: checker
+                        visible: false
+                        Layout.preferredHeight: dateContainer.height * 0.8
+                        Layout.preferredWidth: height
+                        Layout.maximumWidth: height
+                        property bool valid: false
 
-                color: "grey"
 
-                placeholderText: qsTr("Echéance...")
-                placeholderTextColor: "dark grey"
 
-                maximumLength: {
-                    if (container.width - contentWidth < 25 * shape.scaling) {
-                        return length;
-                    } else {
-                        return 32767;
+                        Cross {
+                            id: cross
+                            visible: !parent.valid
+                            anchors.fill: checker
+
+                            ContextHelp {
+                                id: crossHelp
+                                text: "L'échéance n'a pu\nêtre interprétée.\nEssayez par\nexemple :\nSamedi 18h"
+                                scaling: shape.scaling
+                                color: Qt.darker(shape.color, 1.04)
+                                textColor: "#eb6767"
+                                triggerArea: cross
+                                textArea: content
+                            }
+
+                            onVisibleChanged: if(!visible) crossHelp.visible = false
+                        }
+
+                        Check {
+                            id: check
+                            visible: parent.valid
+                            anchors.fill: checker
+
+                            ContextHelp {
+                                id: checkHelp
+                                text: "L'échéance est\nfixée au\n" + deadline.asString()
+                                scaling: shape.scaling
+                                color: Qt.darker(shape.color, 1.04)
+                                textColor: Qt.darker(shape.color, 1.4)
+                                triggerArea: check
+                                textArea: content
+                            }
+
+                            onVisibleChanged: if(!visible) checkHelp.visible = false
+                        }
+                    }
+
+                    Rectangle {
+                        id: fakePadding
+                        Layout.minimumWidth: checker.width * 1.4
                     }
                 }
-
-                Layout.preferredWidth: {
-                    if (dueDate.length == 0) {
-                        return 105 * shape.scaling;
-                    } else {
-                        return contentWidth + leftPadding + rightPadding;
-                    }
-                }
-
-                Layout.minimumHeight: 15 * shape.scaling
-                Layout.maximumWidth: container.width
             }
         }
     }
@@ -211,6 +302,35 @@ PostItBase {
         radius: parent.radius + 2
     }
 
+    Rectangle {
+        id: alertArea
+        anchors.fill: parent
+        color: "#eb6767"
+        visible: false
+    }
+
+    onAlertChanged: {
+        if (alert) {
+            if (!content.readOnly) {
+                timerAlert.start();
+                shape.z = dragArea.nextZ();
+            }
+        } else {
+            timerAlert.stop();
+            alertArea.visible = false;
+        }
+    }
+
+    Timer {
+        id: timerAlert
+        interval: 500
+        repeat: true
+
+        onTriggered: {
+            alertArea.visible = !alertArea.visible;
+        }
+    }
+
 /*
     CustomDate{
         year: 2020
@@ -221,19 +341,30 @@ PostItBase {
         second: 10
     }
 */
-    function updateDate(){
-//        //var dateString = deadline.toLocaleDateString();
-//        deadline = Qt.createQmlObject('import Backend 1.0; CustomDate{
-//        year: 2020
-//        month: 11
-//        day: 8
-//        hour: 22
-//        minute: 48
-//        second: 10
-//             }',
-//          shape,
-//          "dynamicSnippet1");
-//        console.log("deadline updated : " + deadline)
-        console.log("day = " + deadline.day + " year = " + deadline.year);
+
+    function updateDate(){ 
+        alert = false;
+        var d = dueDate.text
+
+        if (d !== "secret") {
+            checker.valid = false;
+        } else {
+            checker.valid = true;
+            createDate(new Date());
+        }
+    }
+
+    function createDate(date) {
+        deadline = Qt.createQmlObject(
+                `import Backend 1.0;
+                CustomDate {
+                    year: ${date.getFullYear()}
+                    month: ${date.getMonth() + 1}
+                    day: ${date.getDate()}
+                    hour: ${date.getHours()}
+                    minute: ${date.getMinutes()}
+                    second: ${date.getSeconds()}
+                }`,
+            shape);
     }
 }
