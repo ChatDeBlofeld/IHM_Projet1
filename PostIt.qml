@@ -338,8 +338,7 @@ PostItBase {
     }
 
     function updateDate(){ 
-        var str = dueDate.text;
-
+        var str = dueDate.text.toLowerCase().trim();
         alert = false;
         const current = new Date();
 
@@ -388,6 +387,17 @@ PostItBase {
         }else if(weekDayRegex.test(str)){
             //checker.valid = true;
             console.log("week day detected");
+            var weekDays = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
+            var tokens = str.split(" ");
+            var index = weekDays.indexOf(tokens[0])
+            if(index !== -1){
+                day = index + 1;
+                var hourIndex = tokens[1] ==="à"? 2 : 1;
+
+            }else{
+                error = true;
+            }
+
 
         }else if(hourRegex.test(str)){
             //checker.valid = true;
