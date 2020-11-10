@@ -26,6 +26,7 @@ PostItBase {
     property DragArea dragArea
     property string borderColor: "#10000000"
     property bool alert: false
+    property bool justCreated: true
 
     property bool active: Drag.active
 
@@ -66,7 +67,10 @@ PostItBase {
     }
 
     onScalingChanged: {
-        var r = dragArea.handleZoom(this);
+        if(!justCreated) {
+            var r = dragArea.handleZoom(this);
+        }
+        justCreated = false;
     }
 
     Drag.active: {
@@ -250,7 +254,7 @@ PostItBase {
 
                             ContextHelp {
                                 id: crossHelp
-                                text: "L'échéance n'a pu\nêtre interprétée.\nEssayez par\nexemple :\nSamedi 18h"
+                                text: "L'échéance n'a pu\nêtre interprétée.\nEssayez par\nexemple :\nSamedi 18h ou\n11.11.20 à 16h30"
                                 scaling: shape.scaling
                                 color: Qt.darker(shape.color, 1.04)
                                 textColor: "#eb6767"
@@ -268,7 +272,7 @@ PostItBase {
 
                             ContextHelp {
                                 id: checkHelp
-                                text: "L'échéance est\nfixée au\n" + deadline.asString()
+                                text: "L'échéance est\nfixée au " + deadline.asString()
                                 scaling: shape.scaling
                                 color: Qt.darker(shape.color, 1.04)
                                 textColor: Qt.darker(shape.color, 1.4)

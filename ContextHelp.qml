@@ -31,7 +31,7 @@ Item {
         width: textArea.width
         height: textArea.height * 0.95
         enabled: false
-        font.pointSize:  14 * context.scaling
+        font.pointSize:  12 * context.scaling
         font.weight: Font.DemiBold
         color: context.textColor
         text: context.text
