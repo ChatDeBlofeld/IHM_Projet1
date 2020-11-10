@@ -422,8 +422,12 @@ PostItBase {
             var index = weekDays.indexOf(tokens[0])
             if(index !== -1){
                 day = index + 1;
-                var hourIndex = tokens[1] ==="à"? 2 : 1;
-
+                if(tokens[1] !== ""){
+                    var hourIndex = tokens[1] ==="à"? 2 : 1;
+                    var r = getHourMinute(tokens[hourIndex])
+                    hour = r[0];
+                    minute = r[1];
+                }
             }else{
                 error = true;
             }
