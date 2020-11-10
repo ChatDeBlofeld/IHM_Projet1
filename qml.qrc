@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>PostIt.qml</file>
-        <file>Drawer.qml</file>
         <file>PostItHeap.qml</file>
         <file>PostItBase.qml</file>
         <file>Outline.qml</file>
