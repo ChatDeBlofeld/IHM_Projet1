@@ -337,6 +337,24 @@ PostItBase {
       return copy;
     }
 
+    function getHourMinute(str) {
+        var tokens;
+
+        if(str.includes("h")){
+            tokens = str.split("h");
+        }else if(str.includes(":")){
+            tokens = str.split(":");
+        }else{
+            error = true;
+        }
+
+        var hour = tokens[0];
+        var minute = -1;
+        if(tokens[1] !== "") minute = tokens[1];
+
+        return [hour, minute];
+    }
+
     function updateDate(){ 
         var str = dueDate.text;
 
@@ -368,8 +386,8 @@ PostItBase {
         // TODO : define rules here
 
         //Regexes for the different formats
-        var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
-        var dateRegex = /^(le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var longDateRegex = /^(le )?[0-9]{1,2} [a-zA-Zéû]+ (([0-9]{2,4})?)( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
+        var dateRegex = /^(le )?[0-9]{1,2}[./][0-9]{1,2}([./][0-9]{2,4})?( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
         var weekDayRegex = /^[a-zA-Z]+( (à )?[0-9]{1,2}[:h]([0-9]{1,2})?)?$/g;
         var hourRegex = /^[0-9]{1,2}[:h]([0-9]{1,2})?/g;
 
@@ -377,13 +395,21 @@ PostItBase {
         var error = false;
         //console.log("current date: " + current.toString());
 
+        str.replace("le ", "");
+        str.replace("à ", "");
         if(longDateRegex.test(str)){
             //checker.valid = true;
             console.log("long date detected");
 
         }else if(dateRegex.test(str)){
             //checker.valid = true;
-            console.log("date detected");
+            var tokens = str.split(" ");
+            if (tokens.length > 1) {
+                var r = getHourMinute(tokens[1]);
+                hour = r[0];
+                minute = r[1];
+            }
+
 
         }else if(weekDayRegex.test(str)){
             //checker.valid = true;
@@ -392,18 +418,9 @@ PostItBase {
         }else if(hourRegex.test(str)){
             //checker.valid = true;
             console.log("hour detected");
-            var tokens;
-
-            if(str.includes("h")){
-                tokens = str.split("h");
-            }else if(str.includes(":")){
-                tokens = str.split(":");
-            }else{
-                error = true;
-            }
-
-            hour = tokens[0];
-            if(tokens[1] !== "") minute = tokens[1];
+            var r = getHourMinute(str);
+            hour = r[0];
+            minute = r[1];
 
             //console.log("hour: " + hour + "minute: " + minute);
 
