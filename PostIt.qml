@@ -12,7 +12,7 @@ PostItBase {
     border.color: borderColor
     border.width: 2
     property CustomDate deadline: CustomDate{
-        year: 2020
+        year: 2023
         month: 11
         day: 8
         hour: 22
