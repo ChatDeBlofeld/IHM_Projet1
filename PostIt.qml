@@ -478,7 +478,7 @@ PostItBase {
             }
 
             if(year === -1){
-                if(current.getMonth() + 1 > month || (current.getMonth() + 1 === month && current.getDate() > day)){
+                if(current.getMonth() + 1 > month || (current.getMonth() + 1 == month && current.getDate() > day)){
                     year = current.getFullYear() + 1;
                 }else{
                     year = current.getFullYear();
