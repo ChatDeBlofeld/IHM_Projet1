@@ -15,7 +15,7 @@ CustomDate::CustomDate(int year, int month, int day, int hour, int minute, int s
 
 QString CustomDate::asString() const
 {
-    return toDateTime().toString("dd.MM.yyyy à hh:mm");
+    return toDateTime().toString("dd.MM.yyyy\nà hh:mm");
 }
 
 void CustomDate::reset() {
@@ -39,7 +39,7 @@ QDateTime CustomDate::toDateTime() const
 }
 
 bool CustomDate::isValid() const {
-    return toDateTime().isValid();
+    return QDate(_year, _month, _day).isValid() && QTime(_hour, _minute, _second).isValid();
 }
 
 
