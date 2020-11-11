@@ -10,7 +10,7 @@ Window {
     height: 720
     visible: true
     title: qsTr("Brain extender")
-//    visibility: Window.FullScreen
+    visibility: Window.FullScreen
 
     readonly property DragArea creationDragArea: DragArea {
         maxWidth: mainFrame.width
