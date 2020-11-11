@@ -4,8 +4,7 @@ Auteurs :
 - Gildas HOULMANN
 - Thibaud FRANCHETTI
 
-Répertoire Github : 
-- [https://github.com/ChatDeBlofeld/IHM_Projet1](https://github.com/ChatDeBlofeld/IHM_Projet1)
+Répertoire Github : [https://github.com/ChatDeBlofeld/IHM_Projet1](https://github.com/ChatDeBlofeld/IHM_Projet1)
 
 ## Introduction
 
