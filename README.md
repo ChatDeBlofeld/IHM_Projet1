@@ -4,6 +4,9 @@ Auteurs :
 - Gildas HOULMANN
 - Thibaud FRANCHETTI
 
+Répertoire Github : 
+- [https://github.com/ChatDeBlofeld/IHM_Projet1](https://github.com/ChatDeBlofeld/IHM_Projet1)
+
 ## Introduction
 
 Pour notre application de gestion de pense-bêtes, nous sommes partis d'une impression, celle que la source d'erreurs la plus importante pour une personne âgée est la longueur de la procédure nécessaire à l'accomplissement d'une tâche. 
